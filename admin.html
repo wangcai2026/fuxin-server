@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>福鑫回收·管理后台</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",system-ui,sans-serif;}
+body{background:#f6f7f9;padding-bottom:20px;}
+.top{background:linear-gradient(135deg,#ff4d2e,#ff7a3d);color:#fff;padding:16px;position:sticky;top:0;z-index:10;}
+.top h1{font-size:18px;}
+.top p{font-size:12px;opacity:.9;margin-top:2px;}
+.wrap{padding:14px;max-width:600px;margin:0 auto;}
+.card{background:#fff;border-radius:14px;padding:16px;margin-bottom:12px;box-shadow:0 1px 4px #00000010;}
+h2{font-size:15px;color:#ff4d2e;margin-bottom:12px;}
+input{width:100%;border:1.5px solid #eee;border-radius:10px;padding:12px;font-size:16px;margin:6px 0;}
+button{width:100%;border:none;border-radius:10px;padding:13px;font-size:16px;font-weight:600;margin:6px 0;background:linear-gradient(135deg,#ff4d2e,#ff7a3d);color:#fff;cursor:pointer;}
+button.ghost{background:#fff;color:#ff4d2e;border:1.5px solid #ffd2c4;}
+button.small{width:auto;padding:6px 14px;font-size:13px;margin:0;}
+.tabs{display:flex;gap:8px;margin-bottom:12px;}
+.tab{flex:1;text-align:center;padding:10px;background:#fff;border-radius:10px;font-size:14px;color:#666;cursor:pointer;}
+.tab.active{background:#ff4d2e;color:#fff;}
+.row{padding:12px 0;border-bottom:1px solid #f0f0f0;font-size:14px;}
+.row:last-child{border-bottom:none;}
+.row .name{font-weight:600;}
+.row .meta{color:#888;font-size:12px;margin-top:3px;}
+.badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;margin-left:6px;}
+.badge.ok{background:#e6f9ee;color:#2ec27e;}
+.badge.pending{background:#fff3e0;color:#ff9800;}
+.redeem-result{padding:12px;border-radius:10px;margin:8px 0;font-size:14px;display:none;}
+.redeem-result.ok{background:#e6f9ee;color:#1a7f4e;display:block;}
+.redeem-result.fail{background:#ffe5e0;color:#c0392b;display:block;}
+.hidden{display:none;}
+</style>
+</head>
+<body>
+<div class="top"><h1>福鑫回收·管理后台</h1><p>礼品核销 / 估价查看</p></div>
+
+<div class="wrap">
+  <!-- 登录 -->
+  <div class="card" id="loginCard">
+    <h2>管理员登录</h2>
+    <input type="password" id="pwd" placeholder="管理密码">
+    <button onclick="login()">登录</button>
+  </div>
+
+  <!-- 主界面 -->
+  <div id="main" class="hidden">
+    <div class="tabs">
+      <div class="tab active" onclick="showTab('gift')">礼品核销</div>
+      <div class="tab" onclick="showTab('est')">估价单 <span id="estCount" style="color:#ff4d2e"></span></div>
+    </div>
+
+    <div id="giftTab">
+      <div class="card">
+        <h2>扫码/输入核销码</h2>
+        <input type="text" id="redeemCode" placeholder="输入6位核销码" inputmode="numeric">
+        <button onclick="redeem()">核销</button>
+        <div class="redeem-result" id="redeemResult"></div>
+      </div>
+      <div class="card">
+        <h2>今日申领记录</h2>
+        <div id="giftList"></div>
+      </div>
+    </div>
+
+    <div id="estTab" class="hidden">
+      <div class="card">
+        <h2>客户估价单</h2>
+        <div id="estList"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+let token = sessionStorage.getItem('admin_token') || '';
+const H = () => ({ 'Content-Type':'application/json', 'x-admin-token': token });
+
+async function login(){
+  const pwd = document.getElementById('pwd').value;
+  const r = await fetch('/api/admin/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:pwd})});
+  const j = await r.json();
+  if(j.ok){
+    token = pwd;
+    sessionStorage.setItem('admin_token', pwd);
+    document.getElementById('loginCard').classList.add('hidden');
+    document.getElementById('main').classList.remove('hidden');
+    loadGifts(); loadEstimates();
+  } else {
+    alert('密码错');
+  }
+}
+if(token) login();
+
+function showTab(t){
+  document.querySelectorAll('.tab').forEach((el,i)=>el.classList.toggle('active', (i===0)===(t==='gift')));
+  document.getElementById('giftTab').classList.toggle('hidden', t!=='gift');
+  document.getElementById('estTab').classList.toggle('hidden', t!=='est');
+}
+
+async function redeem(){
+  const code = document.getElementById('redeemCode').value.trim();
+  const box = document.getElementById('redeemResult');
+  const r = await fetch('/api/admin/gifts/'+code+'/redeem',{method:'POST',headers:H()});
+  const j = await r.json();
+  box.className = 'redeem-result ' + (j.ok?'ok':'fail');
+  box.textContent = j.ok ? `✅ 核销成功：${j.name}（${j.phone.slice(0,3)}****${j.phone.slice(7)}）` : '❌ ' + j.msg;
+  document.getElementById('redeemCode').value='';
+  loadGifts();
+}
+
+async function loadGifts(){
+  const r = await fetch('/api/admin/gifts',{headers:H()});
+  const rows = await r.json();
+  document.getElementById('giftList').innerHTML = rows.slice(0,50).map(g=>`
+    <div class="row">
+      <div class="name">${g.name} <span class="badge ${g.redeemed?'ok':'pending'}">${g.redeemed?'已核销':'未核销'}</span></div>
+      <div class="meta">${g.phone} · ${g.user_type||''} · 码${g.code} · ${g.created_at}</div>
+    </div>`).join('');
+}
+
+async function loadEstimates(){
+  const r = await fetch('/api/admin/estimates',{headers:H()});
+  const rows = await r.json();
+  const pending = rows.filter(x=>x.status==='pending').length;
+  document.getElementById('estCount').textContent = pending? `(${pending})`:'';
+  document.getElementById('estList').innerHTML = rows.slice(0,50).map(e=>`
+    <div class="row">
+      <div class="name">${e.goods_type||'物品'} <span class="badge ${e.status==='pending'?'pending':'ok'}">${e.status==='pending'?'待联系':'已联系'}</span></div>
+      <div class="meta">${e.description||''}</div>
+      <div class="meta">📞 ${e.phone} · ${e.created_at}</div>
+      ${e.status==='pending'?`<button class="small ghost" onclick="markDone(${e.id})">已电话联系</button>`:''}
+    </div>`).join('');
+}
+async function markDone(id){
+  await fetch('/api/admin/estimates/'+id+'/status',{method:'POST',headers:H(),body:JSON.stringify({status:'contacted'})});
+  loadEstimates();
+}
+</script>
+</body>
+</html>

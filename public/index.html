@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"/>
+  <title>福鑫回收寄卖</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#ff4d2e">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="福鑫回收寄卖">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="icon" type="image/png" href="icon-192.png">
+  <style>
+    :root{
+      --primary:#ff4d2e;
+      --primary-deep:#e63a1c;
+      --gold:#c98a1b;
+      --bg:#faf7f2;
+      --card:#ffffff;
+      --text:#1f2024;
+      --text-sub:#6b6f78;
+      --line:#f0ece5;
+      --radius:18px;
+    }
+    *{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",system-ui,sans-serif;-webkit-tap-highlight-color:transparent;}
+    body{background:var(--bg);color:var(--text);padding-bottom:110px;}
+
+    .header{
+      background:linear-gradient(135deg,#ff4d2e 0%,#ff7a3d 100%);
+      color:#fff;padding:46px 20px 34px;
+      border-radius:0 0 28px 28px;
+      position:relative;overflow:hidden;
+    }
+    .header::after{
+      content:"";position:absolute;right:-40px;top:-40px;width:160px;height:160px;
+      background:radial-gradient(circle,rgba(255,255,255,.18) 0%,transparent 70%);
+      border-radius:50%;
+    }
+    .header .brand{font-size:13px;opacity:.92;letter-spacing:2px;margin-bottom:6px;}
+    .header h1{font-size:24px;font-weight:700;letter-spacing:.5px;}
+    .header .tag{font-size:13px;opacity:.92;margin-top:8px;}
+
+    .container{padding:16px 14px 0;max-width:700px;margin:0 auto;}
+
+    .card{
+      background:var(--card);border-radius:var(--radius);
+      padding:18px;margin-bottom:14px;
+      box-shadow:0 2px 14px rgba(31,32,36,.05);
+    }
+    .card-head{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+    .icon{
+      width:34px;height:34px;border-radius:10px;flex-shrink:0;
+      display:flex;align-items:center;justify-content:center;
+    }
+    .icon svg{width:19px;height:19px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+    .icon-red{background:linear-gradient(135deg,#ff4d2e,#ff7a3d);}
+    .icon-gold{background:linear-gradient(135deg,#f5b942,#e08e1b);}
+    .icon-blue{background:linear-gradient(135deg,#4f8cff,#6ec3ff);}
+    .icon-green{background:linear-gradient(135deg,#2ec27e,#7ee0b0);}
+    .icon-purple{background:linear-gradient(135deg,#8b5cf6,#b794f6);}
+    .card h3{font-size:16px;font-weight:700;}
+
+    .gold-price{display:flex;gap:10px;}
+    .gold-item{
+      flex:1;padding:14px 10px;border-radius:14px;text-align:center;
+      background:linear-gradient(160deg,#fff8ec,#fdeecf);
+    }
+    .gold-item.foot{background:linear-gradient(160deg,#fff3ef,#ffe1d6);}
+    .gold-item .label{font-size:12px;color:var(--text-sub);}
+    .gold-item .price{font-size:22px;font-weight:800;margin-top:6px;font-variant-numeric:tabular-nums;letter-spacing:-.5px;}
+    .gold-item.foot .price{color:var(--primary-deep);}
+    .gold-item.plat .price{color:#3a3f4a;}
+    .trend{display:inline-block;font-size:11px;color:#2ec27e;margin-left:4px;font-weight:600;}
+    .tip{font-size:12.5px;color:var(--text-sub);line-height:1.6;margin-top:10px;}
+
+    input,select,textarea{
+      width:100%;border:1.5px solid #ece8e0;border-radius:12px;
+      padding:13px 14px;margin:7px 0;font-size:16px;background:#faf8f4;
+      color:var(--text);outline:none;transition:border-color .15s,background .15s;
+    }
+    input:focus,select:focus,textarea:focus{border-color:var(--primary);background:#fff;}
+    textarea{min-height:78px;resize:vertical;}
+
+    .btn{
+      display:block;width:100%;border:none;border-radius:14px;
+      padding:15px;font-size:16px;font-weight:600;margin:10px 0 0;
+      text-align:center;cursor:pointer;transition:transform .12s,box-shadow .12s;
+    }
+    .btn:active{transform:scale(.98);}
+    .btn-primary{
+      background:linear-gradient(135deg,#ff4d2e,#ff7a3d);color:#fff;
+      box-shadow:0 6px 16px rgba(255,77,46,.28);
+    }
+    .btn-ghost{
+      background:#fff;color:var(--primary-deep);
+      border:1.5px solid #ffd2c4;
+    }
+
+    .code-box{
+      background:#1f2024;color:#ffd66b;padding:18px;text-align:center;
+      font-size:30px;font-weight:800;letter-spacing:8px;margin:12px 0;
+      border-radius:14px;font-variant-numeric:tabular-nums;
+    }
+
+    .job{padding:12px 0;border-bottom:1px dashed var(--line);font-size:14px;display:flex;align-items:center;gap:8px;}
+    .job:last-child{border-bottom:none;}
+    .job .dot{width:6px;height:6px;border-radius:50%;background:var(--primary);flex-shrink:0;}
+
+    .nav{
+      position:fixed;bottom:0;left:0;right:0;
+      background:#fff;display:flex;align-items:flex-end;
+      border-radius:22px 22px 0 0;
+      box-shadow:0 -4px 20px rgba(0,0,0,.06);
+      padding:8px 10px calc(10px + env(safe-area-inset-bottom));
+      z-index:50;
+    }
+    .nav-item{flex:1;text-align:center;padding:6px 0;font-size:11.5px;color:#9aa0aa;cursor:pointer;}
+    .nav-item .nav-ico{display:block;margin:0 auto 3px;width:22px;height:22px;}
+    .nav-item .nav-ico svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+    .nav-item.active{color:var(--primary-deep);font-weight:600;}
+    .nav-center{flex:0 0 70px;text-align:center;cursor:pointer;margin-top:-28px;}
+    .nav-center .fab{
+      width:56px;height:56px;border-radius:50%;margin:0 auto;
+      background:linear-gradient(135deg,#ff4d2e,#ff7a3d);
+      display:flex;align-items:center;justify-content:center;
+      box-shadow:0 8px 18px rgba(255,77,46,.4);color:#fff;
+    }
+    .nav-center .fab svg{width:26px;height:26px;stroke:#fff;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;}
+    .nav-center .lab{font-size:11px;color:var(--primary-deep);font-weight:600;margin-top:4px;}
+
+    .mask{position:fixed;inset:0;background:rgba(20,20,25,.55);display:none;align-items:center;justify-content:center;padding:22px;z-index:100;backdrop-filter:blur(2px);}
+    .modal{background:#fff;border-radius:20px;padding:24px;max-width:400px;width:100%;}
+    .modal h3{font-size:18px;}
+    .toast{
+      position:fixed;left:50%;bottom:130px;transform:translateX(-50%);
+      background:rgba(31,32,36,.92);color:#fff;padding:11px 20px;border-radius:24px;
+      font-size:14px;opacity:0;transition:opacity .25s;pointer-events:none;z-index:200;white-space:nowrap;
+    }
+    .toast.show{opacity:1;}
+    /* 隐藏平台注入的右下角水印角标 */
+    .watermark-root, [class*="watermark"]{display:none !important;}
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div class="brand">FUXIN · 梁山头店</div>
+  <h1>福鑫回收寄卖</h1>
+  <div class="tag">闲置变现 · 金银首饰 · 数码产品</div>
+</div>
+
+<div class="container">
+
+  <div class="card">
+    <div class="card-head">
+      <div class="icon icon-gold">
+        <svg viewBox="0 0 24 24"><polyline points="3 17 9 11 13 15 21 7"/><polyline points="15 7 21 7 21 13"/></svg>
+      </div>
+      <h3>今日黄金行情</h3>
+    </div>
+    <div class="gold-price">
+      <div class="gold-item foot">
+        <div class="label">足金 999</div>
+        <div class="price">472.5<span style="font-size:13px;font-weight:500"> 元/克</span><span class="trend">▲</span></div>
+      </div>
+      <div class="gold-item plat">
+        <div class="label">铂金 Pt950</div>
+        <div class="price">231<span style="font-size:13px;font-weight:500"> 元/克</span></div>
+      </div>
+    </div>
+    <p class="tip">行情实时波动，以上为参考价，到店以实时报价为准</p>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <div class="icon icon-red">
+        <svg viewBox="0 0 24 24"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+      </div>
+      <h3>到店免费领礼</h3>
+    </div>
+    <form id="giftForm">
+      <input type="text" id="name" placeholder="你的称呼" required>
+      <input type="tel" id="phone" placeholder="手机号（用于核销）" required>
+      <select id="userType">
+        <option value="">选择你的身份</option>
+        <option>工厂工人</option>
+        <option>外卖员</option>
+        <option>快递员</option>
+        <option>网约车司机</option>
+        <option>上班族</option>
+        <option>大学生</option>
+      </select>
+      <p class="tip">每人限领一份，仅限周边街坊，本人到店领取</p>
+      <button class="btn btn-primary" type="submit">申领，获取核销码</button>
+    </form>
+    <div id="giftResult" style="display:none">
+      <p style="font-size:14px">申领成功，你的专属核销码：</p>
+      <div class="code-box" id="codeText"></div>
+      <p class="tip">到店出示此码即可领取礼品</p>
+      <button class="btn btn-ghost" onclick="showAddDesktop()">添加到桌面，像 App 一样用</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <div class="icon icon-blue">
+        <svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+      </div>
+      <h3>拍照在线估价</h3>
+    </div>
+    <form id="estimateForm">
+      <select id="goodsType">
+        <option>物品类型</option>
+        <option>黄金首饰</option>
+        <option>手机</option>
+        <option>笔记本/平板</option>
+        <option>手表</option>
+        <option>电动车</option>
+        <option>其他</option>
+      </select>
+      <textarea placeholder="描述一下成色、购买时间，方便更快报价"></textarea>
+      <input type="tel" placeholder="联系手机号">
+      <button class="btn btn-primary" type="submit">提交估价</button>
+    </form>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <div class="icon icon-red">
+        <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      </div>
+      <h3>到店找我们</h3>
+    </div>
+    <p style="font-size:14px;line-height:1.9">
+      📍 武汉江夏·梁山头社区<br>
+      📞 138-XXXX-8888
+    </p>
+    <button class="btn btn-primary" onclick="openMap()">一键导航到店</button>
+  </div>
+
+</div>
+
+<div class="mask" id="addDesktopModal">
+  <div class="modal">
+    <h3>添加到手机桌面</h3>
+    <p style="margin:14px 0;color:var(--text-sub);font-size:14px;line-height:1.7">
+      把福鑫寄卖行存到桌面，像 App 一样一键打开，随时查金价、估价、联系我们。
+    </p>
+    <p style="font-size:12.5px;color:var(--text-sub);line-height:1.7">
+      安卓 Chrome：浏览器菜单 → 添加到主屏幕 / 安装应用<br>
+      苹果 Safari：分享 → 添加到主屏幕（不要从微信里加）
+    </p>
+    <button class="btn btn-primary" onclick="hideAddDesktop()">我知道了</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<div class="nav">
+  <div class="nav-item active" data-nav="首页">
+    <span class="nav-ico"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
+    首页
+  </div>
+  <div class="nav-center" onclick="scrollToEstimate()">
+    <div class="fab"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+    <div class="lab">估价</div>
+  </div>
+  <div class="nav-item" data-nav="我的">
+    <span class="nav-ico"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
+    我的
+  </div>
+</div>
+
+<script>
+function toast(msg){
+  var t=document.getElementById('toast');
+  t.innerText=msg;t.classList.add('show');
+  clearTimeout(t._timer);
+  t._timer=setTimeout(function(){t.classList.remove('show');},1800);
+}
+function openMap(){
+  var addr=encodeURIComponent('武汉江夏梁山头社区 福鑫寄卖行');
+  window.open('https://uri.amap.com/search?keyword='+addr,'_blank');
+}
+function scrollToEstimate(){
+  document.getElementById('estimateForm').scrollIntoView({behavior:'smooth',block:'center'});
+}
+document.querySelectorAll('.nav-item').forEach(function(el){
+  el.addEventListener('click',function(){
+    document.querySelectorAll('.nav-item').forEach(function(n){n.classList.remove('active');});
+    el.classList.add('active');
+    var name=el.getAttribute('data-nav');
+    if(name==='首页'){window.scrollTo({top:0,behavior:'smooth'});}
+    else{toast('「我的」页面即将上线');}
+  });
+});
+
+document.getElementById('giftForm').addEventListener('submit',async function(e){
+  e.preventDefault();
+  var btn = this.querySelector('button[type=submit]');
+  btn.disabled = true; btn.innerText = '提交中...';
+  try{
+    var r = await fetch('/api/gift',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+      name: document.getElementById('name').value.trim(),
+      phone: document.getElementById('phone').value.trim(),
+      userType: document.getElementById('userType').value
+    })});
+    var j = await r.json();
+    if(j.ok){
+      document.getElementById('codeText').innerText = j.code;
+      this.style.display='none';
+      document.getElementById('giftResult').style.display='block';
+    }else{
+      toast(j.msg || '提交失败');
+      btn.disabled=false; btn.innerText='申领，获取核销码';
+    }
+  }catch(err){
+    toast('网络错误，请重试');
+    btn.disabled=false; btn.innerText='申领，获取核销码';
+  }
+});
+function showAddDesktop(){document.getElementById('addDesktopModal').style.display='flex';}
+function hideAddDesktop(){document.getElementById('addDesktopModal').style.display='none';}
+
+document.getElementById('estimateForm').addEventListener('submit',async function(e){
+  e.preventDefault();
+  var btn = this.querySelector('button[type=submit]');
+  btn.disabled=true; btn.innerText='提交中...';
+  try{
+    var r = await fetch('/api/estimate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+      goodsType: document.getElementById('goodsType').value,
+      description: this.querySelector('textarea').value,
+      phone: this.querySelector('input[type=tel]').value.trim()
+    })});
+    var j = await r.json();
+    if(j.ok){ toast('估价已提交，师傅会尽快联系你报价'); this.reset(); }
+    else { toast(j.msg||'提交失败'); }
+  }catch(err){ toast('网络错误'); }
+  btn.disabled=false; btn.innerText='提交估价';
+});
+
+// 拉真实金价
+(async function loadGold(){
+  try{
+    var r = await fetch('/api/gold');
+    var j = await r.json();
+    if(j.au999){
+      document.querySelector('.gold-item.foot .price').innerHTML =
+        j.au999.toFixed(1)+'<span style="font-size:13px;font-weight:500"> 元/克</span><span class="trend">▲</span>';
+      var tip = document.querySelector('.gold-item.foot').parentElement.nextElementSibling;
+      if(tip && tip.classList.contains('tip')) tip.textContent = '实时大盘价 ' + j.updated + '，回收价到店为准';
+    }
+  }catch(e){}
+})();
+
+// PWA 安装提示
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferredPrompt=e;});
+
+// 注册真实路径的 Service Worker
+if('serviceWorker' in navigator){
+  window.addEventListener('load',function(){
+    navigator.serviceWorker.register('sw.js?v=4').then(function(reg){
+      console.log('SW registered:', reg.scope);
+    }).catch(function(err){
+      console.log('SW failed:', err);
+    });
+  });
+}
+
+// 主动移除平台注入的右下角水印/角标（CSS 藏不住时兜底）
+function stripWatermark(){
+  document.querySelectorAll('.watermark-root,[class*="watermark"],[class*="brand-badge"],[class*="miaoda-badge"]').forEach(function(el){
+    el.remove();
+  });
+  // 兜底：遍历所有 fixed 定位的小元素，含"豆包"文字且尺寸像胶囊的直接删
+  document.querySelectorAll('body > div').forEach(function(el){
+    var cs = getComputedStyle(el);
+    if((cs.position === 'fixed' || cs.position === 'absolute') && /豆包|miaoda|aiforce/i.test(el.textContent) && el.textContent.length < 20){
+      el.remove();
+    }
+  });
+}
+new MutationObserver(stripWatermark).observe(document.documentElement,{childList:true,subtree:true});
+window.addEventListener('load', stripWatermark);
+setTimeout(stripWatermark, 500);
+setTimeout(stripWatermark, 1500);
+
+</script>
+</body>
+</html>

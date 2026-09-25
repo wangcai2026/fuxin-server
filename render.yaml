@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: fuxin-server
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: node server.js
