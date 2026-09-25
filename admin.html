@@ -116,7 +116,7 @@ async function loadGifts(){
   document.getElementById('giftList').innerHTML = rows.slice(0,50).map(g=>`
     <div class="row">
       <div class="name">${g.name} <span class="badge ${g.redeemed?'ok':'pending'}">${g.redeemed?'已核销':'未核销'}</span></div>
-      <div class="meta">${g.phone} · ${g.user_type||''} · 码${g.code} · ${g.created_at}</div>
+      <div class="meta">${g.phone} · 码${g.code} · ${g.created_at}</div>
     </div>`).join('');
 }
 

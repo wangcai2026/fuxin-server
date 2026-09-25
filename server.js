@@ -37,8 +37,8 @@ CREATE TABLE IF NOT EXISTS estimates (
 
 // ===== 公开API：礼品申领 =====
 app.post('/api/gift', (req, res) => {
-  const { name, phone, userType } = req.body;
-  if (!name || !phone) return res.json({ ok: false, msg: '请填写姓名和手机号' });
+  const { name, phone } = req.body;
+  if (!name || !phone) return res.json({ ok: false, msg: '请填写备注和手机号' });
   if (!/^1\d{10}$/.test(phone)) return res.json({ ok: false, msg: '手机号格式不对' });
   // 同手机号当天不能重复领
   const today = new Date().toISOString().slice(0, 10);
@@ -51,7 +51,7 @@ app.post('/api/gift', (req, res) => {
     const exists = db.prepare(`SELECT id FROM gifts WHERE code=?`).get(code);
     if (!exists) ok = true;
   }
-  db.prepare(`INSERT INTO gifts (name,phone,user_type,code) VALUES (?,?,?,?)`).run(name, phone, userType || '', code);
+  db.prepare(`INSERT INTO gifts (name,phone,user_type,code) VALUES (?,?,?,?)`).run(name, phone, '', code);
   res.json({ ok: true, code });
 });
 

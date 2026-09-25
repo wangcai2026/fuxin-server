@@ -181,17 +181,8 @@
       <h3>到店免费领礼</h3>
     </div>
     <form id="giftForm">
-      <input type="text" id="name" placeholder="你的称呼" required>
+      <input type="text" id="name" placeholder="备注" required>
       <input type="tel" id="phone" placeholder="手机号（用于核销）" required>
-      <select id="userType">
-        <option value="">选择你的身份</option>
-        <option>工厂工人</option>
-        <option>外卖员</option>
-        <option>快递员</option>
-        <option>网约车司机</option>
-        <option>上班族</option>
-        <option>大学生</option>
-      </select>
       <p class="tip">每人限领一份，仅限周边街坊，本人到店领取</p>
       <button class="btn btn-primary" type="submit">申领，获取核销码</button>
     </form>
@@ -304,8 +295,7 @@ document.getElementById('giftForm').addEventListener('submit',async function(e){
   try{
     var r = await fetch('/api/gift',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
       name: document.getElementById('name').value.trim(),
-      phone: document.getElementById('phone').value.trim(),
-      userType: document.getElementById('userType').value
+      phone: document.getElementById('phone').value.trim()
     })});
     var j = await r.json();
     if(j.ok){
