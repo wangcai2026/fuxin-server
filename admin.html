@@ -130,6 +130,8 @@ async function loadEstimates(){
       <div class="name">${e.goods_type||'物品'} <span class="badge ${e.status==='pending'?'pending':'ok'}">${e.status==='pending'?'待联系':'已联系'}</span></div>
       <div class="meta">${e.description||''}</div>
       <div class="meta">📞 ${e.phone} · ${e.created_at}</div>
+      <div class="meta">📱 ${e.call_ok||'-'} · 💬 ${e.wechat_ok||'-'}</div>
+      ${e.photos ? '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">'+e.photos.split(',').map(function(p){return '<img src="/uploads/'+p+'" style="width:60px;height:60px;object-fit:cover;border-radius:6px">'}).join('')+'</div>' : ''}
       ${e.status==='pending'?`<button class="small ghost" onclick="markDone(${e.id})">已电话联系</button>`:''}
     </div>`).join('');
 }

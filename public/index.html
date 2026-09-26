@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"/>
-  <title>福鑫回收寄卖</title>
+  <title>福鑫寄售行</title>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#ff4d2e">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="apple-mobile-web-app-title" content="福鑫回收寄卖">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="福鑫寄售行">
   <link rel="apple-touch-icon" href="icon-192.png">
   <link rel="icon" type="image/png" href="icon-192.png">
   <style>
@@ -29,7 +29,7 @@
 
     .header{
       background:linear-gradient(135deg,#ff4d2e 0%,#ff7a3d 100%);
-      color:#fff;padding:46px 20px 34px;
+      color:#fff;padding:env(safe-area-inset-top) 20px 18px;
       border-radius:0 0 28px 28px;
       position:relative;overflow:hidden;
     }
@@ -97,6 +97,16 @@
       background:#fff;color:var(--primary-deep);
       border:1.5px solid #ffd2c4;
     }
+    .yesno{
+      flex:1;padding:12px;border:1.5px solid #e5e5e5;border-radius:10px;background:#fff;font-size:14px;cursor:pointer;color:#666;
+    }
+    .yesno.on{border-color:var(--primary);background:#fff1ec;color:var(--primary);font-weight:700;}
+    @keyframes goldflow{0%{background-position:200% 0}100%{background-position:-200% 0}}
+    .mom-filter{flex:1;padding:8px;border:none;border-radius:10px;background:rgba(255,255,255,.25);color:#fff;font-size:13px;cursor:pointer}
+    .mom-filter.active{background:#fff;color:#ff4d2e;font-weight:700}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes slideInRight{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:translateX(0)}}
+    @keyframes slideInLeft{from{opacity:0;transform:translateX(-40px)}to{opacity:1;transform:translateX(0)}}
 
     .code-box{
       background:#1f2024;color:#ffd66b;padding:18px;text-align:center;
@@ -113,23 +123,33 @@
       background:#fff;display:flex;align-items:flex-end;
       border-radius:22px 22px 0 0;
       box-shadow:0 -4px 20px rgba(0,0,0,.06);
-      padding:8px 10px calc(10px + env(safe-area-inset-bottom));
+      padding:8px 10px calc(8px + env(safe-area-inset-bottom, 0px));
       z-index:50;
     }
-    .nav-item{flex:1;text-align:center;padding:6px 0;font-size:11.5px;color:#9aa0aa;cursor:pointer;}
-    .nav-item .nav-ico{display:block;margin:0 auto 3px;width:22px;height:22px;}
-    .nav-item .nav-ico svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+    .nav-item{flex:1;text-align:center;padding:8px 10px;font-size:12px;color:#9aa0aa;cursor:pointer;}
+    .nav-item:first-child{padding-left:0;}
+    .nav-item:last-child{padding-right:0;}
+    .nav-item .nav-ico{display:block;margin:0 auto 4px;width:24px;height:24px;}
+    .nav-item .nav-ico svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
     .nav-item.active{color:var(--primary-deep);font-weight:600;}
-    .nav-center{flex:0 0 70px;text-align:center;cursor:pointer;margin-top:-28px;}
+    .nav-item.center{flex:0 0 90px;}
+    .nav-item.center .nav-ico{width:36px;height:36px;background:linear-gradient(135deg,#ff4d2e,#ff7a3d);border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:2px;box-shadow:0 4px 12px #ff4d2e40;}
+    .nav-item.center .nav-ico svg{width:18px;height:18px;stroke:#fff;}
+    .nav-center{flex:0 0 80px;text-align:center;cursor:pointer;margin-top:-24px;}
     .nav-center .fab{
-      width:56px;height:56px;border-radius:50%;margin:0 auto;
+      width:54px;height:54px;border-radius:50%;margin:0 auto;
       background:linear-gradient(135deg,#ff4d2e,#ff7a3d);
       display:flex;align-items:center;justify-content:center;
       box-shadow:0 8px 18px rgba(255,77,46,.4);color:#fff;
     }
     .nav-center .fab svg{width:26px;height:26px;stroke:#fff;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;}
-    .nav-center .lab{font-size:11px;color:var(--primary-deep);font-weight:600;margin-top:4px;}
+    .nav-center .lab{font-size:12px;color:var(--primary-deep);font-weight:600;margin-top:5px;}
 
+@keyframes floatUp{
+  0%{opacity:0;transform:translateY(6px) scale(.8);}
+  30%{opacity:1;transform:translateY(0) scale(1);}
+  100%{opacity:0;transform:translateY(-18px) scale(.9);}
+}
     .mask{position:fixed;inset:0;background:rgba(20,20,25,.55);display:none;align-items:center;justify-content:center;padding:22px;z-index:100;backdrop-filter:blur(2px);}
     .modal{background:#fff;border-radius:20px;padding:24px;max-width:400px;width:100%;}
     .modal h3{font-size:18px;}
@@ -145,20 +165,44 @@
 </head>
 <body>
 
+<div class="mask" id="inviteModal" style="display:flex;z-index:500">
+  <div class="modal" style="max-width:380px;text-align:center">
+    <div style="width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#ff4d2e,#ff7a3d);color:#fff;display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 12px;font-weight:700">福</div>
+    <h3 style="margin-bottom:6px">福鑫寄售行</h3>
+    <p style="font-size:13px;color:#999;margin-bottom:16px">请输入推荐码进入</p>
+    <input type="text" id="inviteCode" placeholder="请输入推荐码" style="text-align:center;letter-spacing:2px;font-size:18px;font-weight:600">
+    <button class="btn btn-primary" onclick="checkInvite()">进入</button>
+  </div>
+</div>
+
 <div class="header">
   <div class="brand">FUXIN · 梁山头店</div>
   <h1>福鑫回收寄卖</h1>
-  <div class="tag">闲置变现 · 金银首饰 · 数码产品</div>
+  <div id="headerDate" style="font-size:12px;opacity:.92;margin-top:6px"></div>
 </div>
 
 <div class="container">
 
-  <div class="card">
+  <div class="card" style="display:flex;align-items:center;gap:10px;padding:12px 16px;background:linear-gradient(90deg,#fff8f4,#fff);cursor:pointer" onclick="document.getElementById('noticeModal').style.display='flex'">
+    <div style="flex-shrink:0;width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#ff4d2e,#ff7a3d);color:#fff;display:flex;align-items:center;justify-content:center;font-size:16px">📢</div>
+    <div style="flex:1;font-size:14px;line-height:1.4;font-weight:700;animation:goldflow 3s linear infinite;background:linear-gradient(90deg,#ff4d2e 0%,#ff4d2e 40%,#ffd24d 50%,#ff4d2e 60%,#ff4d2e 100%);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" id="noticeText">国庆期间正常营业，黄金高价回收，免费估价，到店领好礼</div>
+    <span style="color:#ff4d2e;font-size:18px">›</span>
+  </div>
+  <div class="mask" id="noticeModal">
+    <div class="modal" style="max-width:420px">
+      <h3 style="margin-bottom:12px">📢 公告</h3>
+      <p style="font-size:15px;line-height:1.8;color:#333" id="noticeFull"></p>
+      <button class="btn btn-primary" onclick="noticeModal.style.display='none'">我知道了</button>
+    </div>
+  </div>
+
+  <div class="card" onclick="location.hash='#/gold'" style="cursor:pointer">
     <div class="card-head">
       <div class="icon icon-gold">
         <svg viewBox="0 0 24 24"><polyline points="3 17 9 11 13 15 21 7"/><polyline points="15 7 21 7 21 13"/></svg>
       </div>
       <h3>今日黄金行情</h3>
+      <span style="margin-left:auto;font-size:12px;color:#ff4d2e">全部金价 ›</span>
     </div>
     <div class="gold-price">
       <div class="gold-item foot">
@@ -170,74 +214,277 @@
         <div class="price">231<span style="font-size:13px;font-weight:500"> 元/克</span></div>
       </div>
     </div>
-    <p class="tip">行情实时波动，以上为参考价，到店以实时报价为准</p>
+    <p class="tip">点这里看足金/18K/铂金/钯金/足银全部回收价</p>
   </div>
 
   <div class="card">
-    <div class="card-head">
-      <div class="icon icon-red">
-        <svg viewBox="0 0 24 24"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
-      </div>
-      <h3>到店免费领礼</h3>
-    </div>
-    <form id="giftForm">
-      <input type="text" id="name" placeholder="备注" required>
-      <input type="tel" id="phone" placeholder="手机号（用于核销）" required>
-      <p class="tip">每人限领一份，仅限周边街坊，本人到店领取</p>
-      <button class="btn btn-primary" type="submit">申领，获取核销码</button>
-    </form>
-    <div id="giftResult" style="display:none">
-      <p style="font-size:14px">申领成功，你的专属核销码：</p>
-      <div class="code-box" id="codeText"></div>
-      <p class="tip">到店出示此码即可领取礼品</p>
-      <button class="btn btn-ghost" onclick="showAddDesktop()">添加到桌面，像 App 一样用</button>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-head">
+    <div class="card-head" onclick="toggleEst()" style="cursor:pointer">
       <div class="icon icon-blue">
         <svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
       </div>
-      <h3>拍照在线估价</h3>
+      <h3>回收在线估价</h3>
+      <span id="estArrow" style="margin-left:auto;color:#999;font-size:18px;transition:transform .2s">▾</span>
     </div>
+    <div id="estBody" style="display:none">
     <form id="estimateForm">
-      <select id="goodsType">
-        <option>物品类型</option>
-        <option>黄金首饰</option>
-        <option>手机</option>
-        <option>笔记本/平板</option>
-        <option>手表</option>
-        <option>电动车</option>
-        <option>其他</option>
-      </select>
-      <textarea placeholder="描述一下成色、购买时间，方便更快报价"></textarea>
-      <input type="tel" placeholder="联系手机号">
+      <div onclick="openGoodsPicker()" style="padding:16px;font-size:16px;border:1px solid #ddd;border-radius:12px;background:#fff;margin:8px 0;display:flex;justify-content:space-between;align-items:center;cursor:pointer">
+        <span id="goodsTypeLabel" style="color:#999">物品类型</span>
+        <span style="color:#bbb">▾</span>
+      </div>
+      <input type="hidden" id="goodsType" value="">
+      <textarea placeholder="具体型号、成色、内存、购买时间&#10;黄金类型、克重、购买时间"></textarea>
+      <div style="margin:8px 0">
+        <input type="file" id="photoInput" accept="image/*" multiple style="display:none" onchange="showPhotos(this)">
+        <button class="btn btn-ghost" type="button" onclick="document.getElementById('photoInput').click()">📷 拍照 / 上传图片（最多8张）</button>
+        <div id="photoPreview" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px"></div>
+      </div>
       <button class="btn btn-primary" type="submit">提交估价</button>
     </form>
+    </div>
+  </div>
+
+  <!-- 我要寄卖 -->
+  <div class="card">
+    <div class="card-head" onclick="toggleConsign()" style="cursor:pointer">
+      <div class="icon" style="background:linear-gradient(135deg,#1a1a2e,#16213e);color:#ffd66b">
+        <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      </div>
+      <h3>帮我寄卖物品</h3>
+      <span id="consignArrow" style="margin-left:auto;color:#999;font-size:18px;transition:transform .2s;transform:rotate(-90deg)">▾</span>
+    </div>
+    <div id="consignBody" style="display:none">
+      <p onclick="openConsignHelp()" style="font-size:13px;color:#ff4d2e;margin-bottom:12px;cursor:pointer">说明：什么是寄卖</p>
+      <div onclick="openConsignPicker()" style="padding:16px;font-size:16px;border:1px solid #ddd;border-radius:12px;background:#fff;margin:8px 0;display:flex;justify-content:space-between;align-items:center;cursor:pointer">
+        <span id="consignTypeLabel" style="color:#999">物品类型</span>
+        <span style="color:#bbb">▾</span>
+      </div>
+      <input type="hidden" id="consignType" value="">
+      <textarea placeholder="物品名称、品牌、成色、购买时间、期望售价"></textarea>
+      <div style="margin:8px 0">
+        <input type="file" id="consignPhotoInput" accept="image/*" multiple style="display:none" onchange="showConsignPhotos(this)">
+        <button class="btn btn-ghost" type="button" onclick="document.getElementById('consignPhotoInput').click()">📷 拍照 / 上传图片（最多8张）</button>
+        <div id="consignPhotoPreview" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px"></div>
+      </div>
+      <button class="btn btn-primary" onclick="submitConsign()">提交寄卖申请</button>
+    </div>
+  </div>
+
+  <div class="mask" id="consignPicker" style="align-items:flex-end;padding:0">
+    <div style="background:#fff;border-radius:20px 20px 0 0;padding:16px 16px 30px;width:100%;max-width:600px;margin:0 auto">
+      <h3 style="text-align:center;margin-bottom:14px;font-size:17px">选择寄卖物品类型</h3>
+      <div id="consignOptions" style="display:flex;flex-direction:column;gap:10px"></div>
+      <button class="btn btn-gray" style="margin-top:14px" onclick="consignPicker.style.display='none'">取消</button>
+    </div>
   </div>
 
   <div class="card">
-    <div class="card-head">
+    <div class="card-head" onclick="toggleVisit()" style="cursor:pointer">
       <div class="icon icon-red">
         <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
       </div>
-      <h3>到店找我们</h3>
+      <h3>我要到店</h3>
+      <span id="visitArrow" style="margin-left:auto;color:#999;font-size:18px;transition:transform .2s;transform:rotate(-90deg)">▾</span>
     </div>
+    <div id="visitBody" style="display:none">
     <p style="font-size:14px;line-height:1.9">
-      📍 武汉江夏·梁山头社区<br>
-      📞 138-XXXX-8888
+      📍 武汉市江夏区藏龙岛<br>
+      梁山头社区6区17号<br>
+      <span style="color:#888;font-size:13px">（西二门进来10米）</span><br>
+      📞 151-7129-5787<br>
+      <span style="color:#888;font-size:13px">微信同号</span>
     </p>
-    <button class="btn btn-primary" onclick="openMap()">一键导航到店</button>
+    <div style="display:flex;gap:10px;margin-top:10px">
+      <button class="btn btn-primary" style="margin:0;flex:1" onclick="location.href='tel:15171295787'">一键拨号</button>
+      <button class="btn btn-gray" style="margin:0;flex:1" onclick="copyWeixin()">复制微信号</button>
+    </div>
+    <button class="btn btn-primary" onclick="showMapPicker()">一键导航到店</button>
+    </div>
   </div>
 
+</div>
+
+<div class="mask" id="contactPicker">
+  <div class="modal" style="padding:18px;border-radius:20px">
+    <h3 style="padding:4px 4px 14px;text-align:center;font-size:17px">选择联系方式</h3>
+    <div onclick="pickContact('电话沟通')" style="display:flex;align-items:center;gap:14px;padding:16px;border-radius:16px;background:linear-gradient(135deg,#ff4d2e,#ff7a3d);color:#fff;margin-bottom:12px;cursor:pointer;box-shadow:0 6px 16px rgba(255,77,46,.25)">
+      <div style="width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:22px">📞</div>
+      <div>
+        <div style="font-size:16px;font-weight:700">电话沟通</div>
+        <div style="font-size:12px;opacity:.85;margin-top:2px">直接打电话给你报价</div>
+      </div>
+    </div>
+    <div onclick="pickContact('微信沟通')" style="display:flex;align-items:center;gap:14px;padding:16px;border-radius:16px;background:linear-gradient(135deg,#07c160,#2bdd7e);color:#fff;cursor:pointer;box-shadow:0 6px 16px rgba(7,193,96,.25)">
+      <div style="width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:22px">💬</div>
+      <div>
+        <div style="font-size:16px;font-weight:700">微信沟通</div>
+        <div style="font-size:12px;opacity:.85;margin-top:2px">加微信发图报价，更方便</div>
+      </div>
+    </div>
+    <button class="btn" style="margin-top:14px;background:#f2f2f5;color:#666" onclick="contactPicker.style.display='none'">取消</button>
+  </div>
+</div>
+
+<!-- ===== 店主日常页 ===== -->
+<div id="momentsPage" style="display:none;position:fixed;inset:0;background:var(--bg);z-index:40;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding-bottom:90px;">
+  <div style="background:linear-gradient(135deg,#ff4d2e,#ff7a3d);color:#fff;padding:env(safe-area-inset-top) 20px 18px;border-radius:0 0 24px 24px;position:sticky;top:0;z-index:10">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+      <span onclick="history.back()" style="cursor:pointer;font-size:30px;line-height:1;padding:4px 10px;">‹</span>
+      <h2 style="font-size:20px">店主日常</h2>
+    </div>
+    <p style="font-size:12px;opacity:.9;margin-top:6px">已连续打卡 <span style="font-size:16px;font-weight:700;color:#ffd66b" id="streakDays">28</span> 天 · 累计打卡 <span style="font-size:16px;font-weight:700;color:#ffd66b" id="totalCheckins">156</span> 次</p>
+    <div style="display:flex;gap:8px;margin-top:12px">
+      <button class="mom-filter active" data-f="all" onclick="filterMoments('all',this)">全部</button>
+      <button class="mom-filter" data-f="goods" onclick="filterMoments('goods',this)">寄卖回收</button>
+      <button class="mom-filter" data-f="daily" onclick="filterMoments('daily',this)">店主日常</button>
+    </div>
+  </div>
+  <div style="padding:16px;max-width:700px;margin:0 auto" id="momentsList"></div>
+</div>
+
+<!-- ===== 我的页 ===== -->
+<div id="mePage" style="display:none;position:fixed;inset:0;background:var(--bg);z-index:40;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding-bottom:90px;">
+  <div style="background:linear-gradient(135deg,#ff4d2e,#ff7a3d);color:#fff;padding:env(safe-area-inset-top) 20px 24px;border-radius:0 0 24px 24px;">
+    <div style="display:flex;align-items:center;gap:14px">
+      <div style="width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:700">福</div>
+      <div>
+        <div style="font-size:18px;font-weight:700">尊贵会员</div>
+        <div style="font-size:12px;opacity:.9;margin-top:2px">账号：<span id="memberId">FX----</span></div>
+      </div>
+    </div>
+  </div>
+  <div style="padding:16px">
+    <div class="card" style="text-align:center;padding:24px">
+      <div style="font-size:13px;color:#999">我的积分</div>
+      <div style="font-size:42px;font-weight:800;color:#ff4d2e;margin:6px 0" id="myPoints">1280</div>
+      <button class="btn btn-primary" onclick="location.hash='#/gift'">积分兑换礼品</button>
+      <button class="btn btn-ghost" onclick="location.hash='#/points'" style="margin-top:10px">积分明细</button>
+      <button class="btn btn-ghost" onclick="location.hash='#/myrecords'" style="margin-top:10px">我的提交记录</button>
+    </div>
+    <div class="card">
+      <h3 style="margin-bottom:10px">积分怎么来</h3>
+      <div class="tip" style="line-height:2">
+        · 点赞一条店主日常：<b style="color:#ff4d2e">+2</b> 积分<br>
+        · 每天打卡：<b style="color:#ff4d2e">+5</b> 积分<br>
+        · 连续打卡第 4 天起：每天打卡 <b style="color:#ff4d2e">+10</b> 积分<br>
+        · 连续打卡 7 天：额外 <b style="color:#ff4d2e">+100</b> 积分<br>
+        · 连续打卡 30 天：额外 <b style="color:#ff4d2e">+1000</b> 积分<br>
+        · 线上提交回收/寄卖到店店主确认：<b style="color:#ff4d2e">+100</b> 积分<br>
+        · 到店兑换积分礼品：<b style="color:#ff4d2e">+20</b> 积分<br>
+        · 推荐好友：好友首次进入填你的账号邀请码，好友每次到店确认回收/寄卖，你都可以 <b style="color:#ff4d2e">+10</b> 积分
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 积分明细页 ===== -->
+<div id="pointsPage" style="display:none;position:fixed;inset:0;background:var(--bg);z-index:40;overflow-y:auto;padding-bottom:90px">
+  <div style="background:linear-gradient(135deg,#ff4d2e,#ff7a3d);color:#fff;padding:env(safe-area-inset-top) 20px 18px;border-radius:0 0 24px 24px;position:sticky;top:0;z-index:10">
+    <span onclick="history.back()" style="font-size:22px;cursor:pointer">‹</span>
+    <h2 style="display:inline;margin-left:8px">积分明细</h2>
+  </div>
+  <div style="padding:14px;max-width:700px;margin:0 auto" id="pointsList"></div>
+</div>
+
+<!-- ===== 我的提交记录页 ===== -->
+<div id="recordsPage" style="display:none;position:fixed;inset:0;background:var(--bg);z-index:40;overflow-y:auto;padding-bottom:90px">
+  <div style="background:linear-gradient(135deg,#ff4d2e,#ff7a3d);color:#fff;padding:env(safe-area-inset-top) 20px 18px;border-radius:0 0 24px 24px;position:sticky;top:0;z-index:10">
+    <span onclick="history.back()" style="font-size:22px;cursor:pointer">‹</span>
+    <h2 style="display:inline;margin-left:8px">我的提交记录</h2>
+  </div>
+  <div style="padding:14px;max-width:700px;margin:0 auto" id="recordsList"></div>
+</div>
+
+<!-- 照片放大查看 -->
+<div id="imgViewer" style="display:none;position:fixed;inset:0;background:#000;z-index:100;flex-direction:column;touch-action:none" onclick="this.style.display='none'">
+  <div id="imgCount" style="color:#fff;font-size:14px;padding:14px;position:absolute;top:10px;left:50%;transform:translateX(-50%)"></div>
+  <div style="position:absolute;top:20px;right:20px;color:#fff;font-size:28px;cursor:pointer" onclick="event.stopPropagation();this.parentElement.style.display='none'">✕</div>
+  <div style="flex:1;display:flex;align-items:center;justify-content:center;overflow:hidden" onclick="event.stopPropagation()">
+    <img id="viewerImg" style="max-width:100%;max-height:100%;transition:opacity .2s ease, transform .25s ease;transform-origin:center center" onclick="event.stopPropagation()">
+  </div>
+</div>
+
+<!-- ===== 积分兑换页 ===== -->
+<div id="giftPage" style="display:none;position:fixed;inset:0;background:var(--bg);z-index:40;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding-bottom:90px;">
+  <div style="background:linear-gradient(135deg,#ff4d2e,#ff7a3d);color:#fff;padding:env(safe-area-inset-top) 20px 24px;border-radius:0 0 24px 24px;">
+    <div style="display:flex;align-items:center;gap:10px">
+      <span onclick="history.back()" style="cursor:pointer;font-size:30px;line-height:1;padding:4px 10px;">‹</span>
+      <h2 style="font-size:20px">积分兑换</h2>
+    </div>
+    <p style="font-size:13px;opacity:.9;margin-top:6px">当前积分：1280 分</p>
+  </div>
+  <div style="padding:16px;display:grid;grid-template-columns:1fr 1fr;gap:12px" id="giftList"></div>
+</div>
+
+<div class="mask" id="consignHelpModal">
+  <div class="modal" style="max-width:360px">
+    <h3 style="margin-bottom:16px;text-align:center">什么是寄卖？</h3>
+    <div style="background:#fff8f0;border-radius:12px;padding:14px;margin-bottom:12px">
+      <div style="font-size:13px;color:#999;margin-bottom:6px">两种方式都可以</div>
+      <div style="font-size:14px;line-height:1.9">
+        <span style="color:#ff4d2e">①</span> 物品放店里，店主帮你卖<br>
+        <span style="color:#ff4d2e">②</span> 物品自己留着，拍照+报价发给店主，挂到"店主日常"让附近用户看
+      </div>
+    </div>
+    <div style="background:#fff8f0;border-radius:12px;padding:14px;margin-bottom:12px">
+      <div style="font-size:13px;color:#999;margin-bottom:6px">怎么成交</div>
+      <div style="font-size:14px;line-height:1.9">
+        有人看上，店主联系你成交<br>
+        成交后店主收相应寄卖费用
+      </div>
+    </div>
+    <div style="text-align:center;color:#ff4d2e;font-size:13px;font-weight:600;margin-bottom:16px">
+      看到的都是店主附近的用户，成交方便
+    </div>
+    <button class="btn btn-primary" onclick="consignHelpModal.style.display='none'">我知道了</button>
+  </div>
+</div>
+
+<div class="mask" id="giftConfirmModal">
+  <div class="modal" style="max-width:340px;text-align:center">
+    <img id="giftConfirmImg" style="width:120px;height:120px;object-fit:cover;border-radius:14px;margin:0 auto 14px">
+    <h3 style="margin-bottom:6px">确认兑换</h3>
+    <p style="font-size:14px;color:#666;margin-bottom:4px"><span id="giftConfirmName"></span></p>
+    <p style="font-size:13px;color:#999;margin-bottom:14px">价值 <span id="giftConfirmPrice"></span> · 需要 <b style="color:#ff4d2e" id="giftConfirmPoints"></b> 积分</p>
+    <p style="font-size:12px;color:#999;margin-bottom:16px">提交后等老板确认，到店领取</p>
+    <div style="display:flex;gap:10px">
+      <button class="btn btn-gray" style="margin:0;flex:1" onclick="giftConfirmModal.style.display='none'">再想想</button>
+      <button class="btn btn-primary" style="margin:0;flex:1" onclick="confirmApplyGift()">确认兑换</button>
+    </div>
+  </div>
+</div>
+
+<div class="mask" id="qrcodeModal">
+  <div class="modal" style="max-width:340px;text-align:center">
+    <h3 style="margin-bottom:8px">📱 添加师傅微信报价</h3>
+    <p style="font-size:13px;color:#999;margin-bottom:14px">长按下面二维码，识别后加微信<br>发照片给师傅，更快报价</p>
+    <img src="assets/qrcode.png" style="width:220px;max-width:100%;border-radius:12px;margin:0 auto 14px;display:block">
+    <button class="btn btn-gray" onclick="qrcodeModal.style.display='none'">关闭</button>
+  </div>
+</div>
+
+<div class="mask" id="goodsPicker" style="align-items:flex-end;padding:0">
+  <div style="background:#fff;border-radius:20px 20px 0 0;padding:16px 16px 30px;width:100%;max-width:600px;margin:0 auto">
+    <h3 style="text-align:center;margin-bottom:14px;font-size:17px">选择物品类型</h3>
+    <div id="goodsOptions" style="display:flex;flex-direction:column;gap:10px"></div>
+    <button class="btn btn-gray" style="margin-top:14px" onclick="goodsPicker.style.display='none'">取消</button>
+  </div>
+</div>
+
+<div class="mask" id="mapPickerModal" style="align-items:flex-end;padding:0;">
+  <div style="background:#fff;border-radius:16px 16px 0 0;padding:20px;width:100%;max-width:500px;box-sizing:border-box;">
+    <div style="font-size:17px;font-weight:700;text-align:center;margin-bottom:6px">选择地图导航</div>
+    <div style="font-size:13px;color:#999;text-align:center;margin-bottom:16px">福鑫寄卖行 · 江夏区藏龙岛梁山头新村六区17号-2</div>
+    <button onclick="openAmap()" style="width:100%;padding:14px;margin-bottom:10px;border:none;background:#353b48;color:#e8d5a3;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer">高德地图</button>
+    <button onclick="openBmap()" style="width:100%;padding:14px;margin-bottom:10px;border:none;background:#353b48;color:#e8d5a3;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer">百度地图</button>
+    <button onclick="hideMapPicker()" style="width:100%;padding:14px;border:none;background:#f5f5f5;border-radius:12px;font-size:15px;cursor:pointer">取消</button>
+  </div>
 </div>
 
 <div class="mask" id="addDesktopModal">
   <div class="modal">
     <h3>添加到手机桌面</h3>
     <p style="margin:14px 0;color:var(--text-sub);font-size:14px;line-height:1.7">
-      把福鑫寄卖行存到桌面，像 App 一样一键打开，随时查金价、估价、联系我们。
+      把福鑫寄售行存到桌面，像 App 一样一键打开，随时查金价、估价、联系我们。
     </p>
     <p style="font-size:12.5px;color:var(--text-sub);line-height:1.7">
       安卓 Chrome：浏览器菜单 → 添加到主屏幕 / 安装应用<br>
@@ -249,16 +496,33 @@
 
 <div class="toast" id="toast"></div>
 
-<div class="nav">
-  <div class="nav-item active" data-nav="首页">
+<!-- ===== 金价详情页 ===== -->
+<div id="goldPage" style="display:none;position:fixed;inset:0;background:var(--bg);z-index:40;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding-bottom:90px;">
+  <div style="background:linear-gradient(135deg,#ff4d2e,#ff7a3d);color:#fff;padding:env(safe-area-inset-top) 20px 18px;border-radius:0 0 24px 24px;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+      <span onclick="history.back()" style="cursor:pointer;font-size:30px;line-height:1;padding:4px 10px;">‹</span>
+      <h2 style="font-size:20px;">全部贵金属回收价</h2>
+    </div>
+    <p style="font-size:12px;opacity:.9;">实时大盘减利润后报价，到店以称重为准</p>
+  </div>
+  <div style="padding:16px;max-width:700px;margin:0 auto;">
+    <div class="card">
+      <div id="goldList"></div>
+      <p class="tip">* 以上为参考回收价，实际到店根据成色、重量、当日大盘重新称重报价。</p>
+    </div>
+  </div>
+</div>
+
+<div class="nav" id="mainNav">
+  <div class="nav-item active" data-nav="首页" onclick="location.hash=''">
     <span class="nav-ico"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
     首页
   </div>
-  <div class="nav-center" onclick="scrollToEstimate()">
-    <div class="fab"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
-    <div class="lab">估价</div>
+  <div class="nav-item center" data-nav="店主日常" onclick="location.hash='#/moments'">
+    <span class="nav-ico"><svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></span>
+    店主日常
   </div>
-  <div class="nav-item" data-nav="我的">
+  <div class="nav-item" data-nav="我的" onclick="location.hash='#/me'">
     <span class="nav-ico"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
     我的
   </div>
@@ -271,9 +535,36 @@ function toast(msg){
   clearTimeout(t._timer);
   t._timer=setTimeout(function(){t.classList.remove('show');},1800);
 }
-function openMap(){
-  var addr=encodeURIComponent('武汉江夏梁山头社区 福鑫寄卖行');
-  window.open('https://uri.amap.com/search?keyword='+addr,'_blank');
+function toggleEst(){
+  var b=document.getElementById('estBody'), a=document.getElementById('estArrow');
+  var open=b.style.display!=='none';
+  b.style.display=open?'none':'block';
+  a.style.transform=open?'rotate(-90deg)':'rotate(0)';
+  if(!open){ setTimeout(function(){ b.scrollIntoView({behavior:'smooth',block:'center'}); }, 100); }
+}
+function toggleVisit(){
+  var b=document.getElementById('visitBody'), a=document.getElementById('visitArrow');
+  var open=b.style.display!=='none';
+  b.style.display=open?'none':'block';
+  a.style.transform=open?'rotate(-90deg)':'rotate(0)';
+  if(!open){ setTimeout(function(){ b.scrollIntoView({behavior:'smooth',block:'center'}); }, 100); }
+}
+function showMapPicker(){ document.getElementById('mapPickerModal').style.display='flex'; }function hideMapPicker(){ document.getElementById('mapPickerModal').style.display='none'; }
+function openAmap(){
+  hideMapPicker();
+  window.location.href='https://surl.amap.com/heSnw2u1x9WS';
+}
+function openBmap(){
+  hideMapPicker();
+  window.location.href='https://j.map.baidu.com/99/Tuqh';
+}
+function copyWeixin(){
+  var wx='15171295787';
+  if(navigator.clipboard){navigator.clipboard.writeText(wx).then(function(){toast('微信号已复制：'+wx);});}
+  else{
+    var t=document.createElement('input');t.value=wx;document.body.appendChild(t);t.select();document.execCommand('copy');t.remove();
+    toast('微信号已复制：'+wx);
+  }
 }
 function scrollToEstimate(){
   document.getElementById('estimateForm').scrollIntoView({behavior:'smooth',block:'center'});
@@ -282,68 +573,134 @@ document.querySelectorAll('.nav-item').forEach(function(el){
   el.addEventListener('click',function(){
     document.querySelectorAll('.nav-item').forEach(function(n){n.classList.remove('active');});
     el.classList.add('active');
-    var name=el.getAttribute('data-nav');
-    if(name==='首页'){window.scrollTo({top:0,behavior:'smooth'});}
-    else{toast('「我的」页面即将上线');}
   });
 });
 
-document.getElementById('giftForm').addEventListener('submit',async function(e){
-  e.preventDefault();
-  var btn = this.querySelector('button[type=submit]');
-  btn.disabled = true; btn.innerText = '提交中...';
-  try{
-    var r = await fetch('/api/gift',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
-      name: document.getElementById('name').value.trim(),
-      phone: document.getElementById('phone').value.trim()
-    })});
-    var j = await r.json();
-    if(j.ok){
-      document.getElementById('codeText').innerText = j.code;
-      this.style.display='none';
-      document.getElementById('giftResult').style.display='block';
-    }else{
-      toast(j.msg || '提交失败');
-      btn.disabled=false; btn.innerText='申领，获取核销码';
-    }
-  }catch(err){
-    toast('网络错误，请重试');
-    btn.disabled=false; btn.innerText='申领，获取核销码';
-  }
-});
 function showAddDesktop(){document.getElementById('addDesktopModal').style.display='flex';}
 function hideAddDesktop(){document.getElementById('addDesktopModal').style.display='none';}
 
-document.getElementById('estimateForm').addEventListener('submit',async function(e){
-  e.preventDefault();
-  var btn = this.querySelector('button[type=submit]');
-  btn.disabled=true; btn.innerText='提交中...';
-  try{
-    var r = await fetch('/api/estimate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
-      goodsType: document.getElementById('goodsType').value,
-      description: this.querySelector('textarea').value,
-      phone: this.querySelector('input[type=tel]').value.trim()
-    })});
-    var j = await r.json();
-    if(j.ok){ toast('估价已提交，师傅会尽快联系你报价'); this.reset(); }
-    else { toast(j.msg||'提交失败'); }
-  }catch(err){ toast('网络错误'); }
-  btn.disabled=false; btn.innerText='提交估价';
-});
+// 物品类型选择
+const GOODS_TYPES=['数码产品','金银首饰','名表名包','古董银元','车辆估值','其他'];
+function openGoodsPicker(){
+  document.getElementById('goodsOptions').innerHTML=GOODS_TYPES.map(t=>
+    `<button class="btn btn-ghost" style="margin:0;padding:16px;font-size:16px" onclick="pickGoods('${t}')">${t}</button>`
+  ).join('');
+  document.getElementById('goodsPicker').style.display='flex';
+}
+function pickGoods(t){
+  document.getElementById('goodsType').value=t;
+  var lbl=document.getElementById('goodsTypeLabel');
+  lbl.textContent=t; lbl.style.color='#222';
+  document.getElementById('goodsPicker').style.display='none';
+}
 
-// 拉真实金价
-(async function loadGold(){
-  try{
-    var r = await fetch('/api/gold');
-    var j = await r.json();
-    if(j.au999){
-      document.querySelector('.gold-item.foot .price').innerHTML =
-        j.au999.toFixed(1)+'<span style="font-size:13px;font-weight:500"> 元/克</span><span class="trend">▲</span>';
-      var tip = document.querySelector('.gold-item.foot').parentElement.nextElementSibling;
-      if(tip && tip.classList.contains('tip')) tip.textContent = '实时大盘价 ' + j.updated + '，回收价到店为准';
+document.getElementById('estimateForm').addEventListener('submit',function(e){
+  e.preventDefault();
+  var t=document.getElementById('goodsType').value;
+  var d=document.querySelector('#estimateForm textarea').value.trim();
+  if(!t||t==='物品类型'){ toast('请选择物品类型'); return; }
+  if(!d){ toast('请填写物品信息'); return; }
+  toast('正在连接店主...');
+  setTimeout(function(){ location.href='https://work.weixin.qq.com/kfid/kfc93acd0d19e1d5361?scene=回收估价'; }, 800);
+});
+function showPhotos(input){
+  if(input.files.length > 8){
+    toast('最多上传8张图片');
+    input.value='';
+    return;
+  }
+  var box=document.getElementById('photoPreview');
+  box.innerHTML='';
+  window._upImgs=[];
+  Array.from(input.files).forEach(function(f,i){
+    var url=URL.createObjectURL(f);
+    window._upImgs.push(url);
+    var img=document.createElement('img');
+    img.src=url;
+    img.style.cssText='width:72px;height:72px;object-fit:cover;border-radius:8px;cursor:pointer';
+    img.onclick=function(){ openBigImgsList(window._upImgs,i); };
+    box.appendChild(img);
+  });
+}
+function openBigImgsList(imgs,i){
+  _bigImgs=imgs;
+  _bigIdx=i;
+  var old=document.getElementById('bigModal');
+  if(old) old.remove();
+  var modal=document.createElement('div');
+  modal.id='bigModal';
+  modal.style.cssText='position:fixed;inset:0;background:#000;z-index:9999;display:flex;align-items:center;justify-content:center;overflow:hidden';
+  modal.innerHTML='<img src="'+_bigImgs[i]+'" id="bigImgEl" style="max-width:100%;max-height:100%;object-fit:contain;transition:opacity .15s">';
+  modal.onclick=function(){this.remove()};
+  modal._scale=1;
+  modal.addEventListener('touchstart',function(e){
+    _tx=e.touches[0].clientX;
+    modal._ty=e.touches[0].clientY;
+    modal._swiped=false;
+    if(e.touches.length===2){
+      var dx=e.touches[0].clientX-e.touches[1].clientX, dy=e.touches[0].clientY-e.touches[1].clientY;
+      modal._sd=Math.sqrt(dx*dx+dy*dy);
     }
-  }catch(e){}
-})();
+  },{passive:true});
+  modal.addEventListener('touchmove',function(e){
+    if(e.touches.length===2 && modal._sd){
+      e.preventDefault();
+      var dx=e.touches[0].clientX-e.touches[1].clientX, dy=e.touches[0].clientY-e.touches[1].clientY;
+      var d=Math.sqrt(dx*dx+dy*dy);
+      modal._scale=modal._scale*d/modal._sd;
+      modal._scale=Math.max(1,Math.min(3,modal._scale));
+      modal._sd=d;
+      document.getElementById('bigImgEl').style.transform='scale('+modal._scale+')';
+      return;
+    }
+    if(modal._swiped) return;
+    var dx=e.touches[0].clientX-_tx;
+    var dy=e.touches[0].clientY-modal._ty;
+    if(Math.abs(dx)>10 && Math.abs(dx)>Math.abs(dy) && modal._scale<=1){
+      document.getElementById('bigImgEl').style.transform='translateX('+dx*0.15+'px)';
+    }
+  },{passive:false});
+  modal.addEventListener('touchend',function(e){
+    if(modal._sd){ modal._sd=0; return; }
+    var dx=e.changedTouches[0].clientX-_tx;
+    var dy=e.changedTouches[0].clientY-modal._ty;
+    document.getElementById('bigImgEl').style.transform='scale('+modal._scale+')';
+    if(modal._scale>1) return;
+    if(Math.abs(dx)>40 && Math.abs(dx)>Math.abs(dy)){
+      modal._swiped=true;
+      if(dx<0 && _bigIdx<_bigImgs.length-1){
+        _bigIdx++;
+        var el=document.getElementById('bigImgEl');
+        el.style.opacity='0';
+        setTimeout(function(){el.src=_bigImgs[_bigIdx];el.style.opacity='1'},150);
+      } else if(dx>0 && _bigIdx>0){
+        _bigIdx--;
+        var el2=document.getElementById('bigImgEl');
+        el2.style.opacity='0';
+        setTimeout(function(){el2.src=_bigImgs[_bigIdx];el2.style.opacity='1'},150);
+      }
+    }
+  });
+  modal.addEventListener('touchmove',function(e){e.stopPropagation()},{passive:true});
+  document.body.appendChild(modal);
+}
+var callPick=null, wxPick=null, contactPick=null;
+function pickCall(v){
+  callPick=v;
+  document.getElementById('callYes').classList.toggle('on', v===1);
+  document.getElementById('callNo').classList.toggle('on', v===0);
+}
+function pickWx(v){
+  wxPick=v;
+  document.getElementById('wxYes').classList.toggle('on', v===1);
+  document.getElementById('wxNo').classList.toggle('on', v===0);
+}
+function pickContact(v){
+  contactPick=v;
+  document.getElementById('contactBtn').textContent=v;
+  document.getElementById('contactBtn').style.color='var(--primary)';
+  document.getElementById('contactPicker').style.display='none';
+}
 
 // PWA 安装提示
 let deferredPrompt;
@@ -360,9 +717,611 @@ if('serviceWorker' in navigator){
   });
 }
 
+// ===== 金价详情页（实时拉取） =====
+const OZ = 31.1035;
+// 每种金属的回收扣减（元/克），后台可调
+const DISCOUNT = { au999:0, au18k:0, pt950:0, pt990:0, pd950:0, pd990:0, ag999:0 };
+let GOLD_LIST = [];
+
+async function loadGold(){
+  try{
+    const [au, pt, pd, ag, fx] = await Promise.all([
+      fetch('https://api.gold-api.com/price/XAU').then(r=>r.json()),
+      fetch('https://api.gold-api.com/price/XPT').then(r=>r.json()),
+      fetch('https://api.gold-api.com/price/XPD').then(r=>r.json()),
+      fetch('https://api.gold-api.com/price/XAG').then(r=>r.json()),
+      fetch('https://open.er-api.com/v6/latest/USD').then(r=>r.json())
+    ]);
+    const cny = fx.rates.CNY;
+    const gAu = au.price * cny / OZ;   // 大盘足金 元/克
+    const gPt = pt.price * cny / OZ;
+    const gPd = pd.price * cny / OZ;
+    const gAg = ag.price * cny / OZ;
+    GOLD_LIST = [
+      { name:'足金 999',   price: gAu*1.00 - DISCOUNT.au999, color:'#ff4d2e', home:true  },
+      { name:'18K金',      price: gAu*0.75 - DISCOUNT.au18k, color:'#e6a23c' },
+      { name:'铂金 Pt950', price: gPt*0.95 - DISCOUNT.pt950,  color:'#909399', home:true },
+      { name:'铂金 Pt990', price: gPt*0.99 - DISCOUNT.pt990, color:'#909399' },
+      { name:'钯金 Pd950', price: gPd*0.95 - DISCOUNT.pd950, color:'#4f8cff' },
+      { name:'钯金 Pd990', price: gPd*0.99 - DISCOUNT.pd990, color:'#4f8cff' },
+      { name:'足银 999',   price: gAg*0.999 - DISCOUNT.ag999,color:'#c0c4cc' }
+    ];
+    renderGoldList();
+    // 更新首页两个数字
+    const home = GOLD_LIST.filter(g=>g.home);
+    document.querySelectorAll('.gold-item .price').forEach((el,i)=>{
+      if(home[i]) el.innerHTML = home[i].price.toFixed(1)+'<span style="font-size:13px;font-weight:500"> 元/克</span>';
+    });
+  }catch(e){ console.warn('gold load fail', e); }
+}
+function renderGoldList(){
+  document.getElementById('goldList').innerHTML = GOLD_LIST.map(g=>{
+    return '<div style="display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid #f0ece5;">'
+      +'<div><div style="font-size:15px;font-weight:600;">'+g.name+'</div></div>'
+      +'<div style="font-size:22px;font-weight:800;color:'+g.color+';">'+g.price.toFixed(1)+'<span style="font-size:12px;font-weight:500;color:#999;"> 元/克</span></div>'
+      +'</div>';
+  }).join('');
+}
+loadGold();
+setInterval(loadGold, 5*60*1000);
+// 积分明细
+function addPointLog(type, points, note){
+  var logs = JSON.parse(localStorage.getItem('pointLogs')||'[]');
+  logs.unshift({type:type, points:points, note:note, time:new Date().toLocaleString('zh-CN',{month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'})});
+  localStorage.setItem('pointLogs', JSON.stringify(logs));
+}
+// 初始化虚拟积分记录
+if(!localStorage.getItem('pointLogs')){
+  var demo = [
+    {points:100, note:'到店确认奖励', time:'09-26 12:30'},
+    {points:2, note:'点赞打卡', time:'09-26 11:20'},
+    {points:10, note:'每日打卡（连续8天）', time:'09-26 09:15'},
+    {points:2, note:'点赞打卡', time:'09-25 18:40'},
+    {points:10, note:'每日打卡（连续7天）', time:'09-25 09:22'},
+    {points:-500, note:'兑换：大米5kg', time:'09-24 16:00'},
+    {points:2, note:'点赞打卡', time:'09-24 14:10'},
+    {points:10, note:'每日打卡（连续6天）', time:'09-24 08:50'},
+    {points:5, note:'每日打卡（连续3天）', time:'09-23 09:30'},
+    {points:20, note:'到店核销礼品', time:'09-22 15:00'},
+    {points:5, note:'每日打卡（连续2天）', time:'09-22 10:00'},
+    {points:5, note:'每日打卡（第1天）', time:'09-21 11:30'}
+  ];
+  localStorage.setItem('pointLogs', JSON.stringify(demo));
+}
+function renderPoints(){
+  var logs = JSON.parse(localStorage.getItem('pointLogs')||'[]');
+  document.getElementById('pointsList').innerHTML = logs.map(function(l){
+    return '<div class="card" style="display:flex;justify-content:space-between;align-items:center;padding:14px">'+
+      '<div><div style="font-size:15px">'+l.note+'</div><div style="font-size:12px;color:#aaa;margin-top:4px">'+l.time+'</div></div>'+
+      '<div style="font-size:18px;font-weight:700;color:'+(l.points>0?'#2ec27e':'#ff4d2e')+'">'+(l.points>0?'+':'')+l.points+'</div></div>';
+  }).join('') || '<div class="tip" style="text-align:center;padding:40px 0">还没有积分记录</div>';
+}
+renderPoints();
+
+// 我的提交记录
+var MY_RECORDS = [
+  {type:'回收估价',goods:'数码产品',desc:'iPhone 14 128G 9新',time:'2026-09-25 10:30',photos:['https://picsum.photos/seed/m1/400/300','https://picsum.photos/seed/m2/400/300']},
+  {type:'帮我寄卖',goods:'名牌包',desc:'LV Speedy 30 想卖8000',time:'2026-09-22 16:00',photos:['https://picsum.photos/seed/m3/400/300']}
+];
+function renderRecords(){
+  document.getElementById('recordsList').innerHTML = MY_RECORDS.map(function(r,i){
+    var imgs = r.photos.map(function(p,j){
+      return '<img src="'+p+'" onclick="openBigImgsList('+JSON.stringify(r.photos).replace(/"/g,'&quot;')+','+j+')" style="width:80px;height:80px;object-fit:cover;border-radius:8px;margin:4px;cursor:zoom-in">';
+    }).join('');
+    return '<div class="card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><b>'+r.goods+'</b><span class="badge" style="background:#fff3e0;color:#ff9800;font-size:11px;padding:2px 8px;border-radius:10px">'+r.type+'</span></div><div style="font-size:14px;color:#555;margin:4px 0">'+r.desc+'</div><div style="font-size:12px;color:#aaa">'+r.time+'</div><div>'+imgs+'</div></div>';
+  }).join('') || '<div class="tip" style="text-align:center;padding:40px 0">还没有提交过记录</div>';
+}
+var viewerPhotos=[], viewerIdx=0;
+function openViewer(ri, pi){
+  viewerPhotos = MY_RECORDS[ri].photos;
+  viewerIdx = pi;
+  showViewer(0);
+}
+function showViewer(dir){
+  document.getElementById('imgViewer').style.display='flex';
+  var img=document.getElementById('viewerImg');
+  img.style.opacity='0';
+  img.style.transform='translateX('+(dir>0?'30':'-30')+'px)';
+  setTimeout(function(){
+    img.src=viewerPhotos[viewerIdx];
+    img.style.opacity='1';
+    img.style.transform='translateX(0)';
+  },50);
+  document.getElementById('imgCount').textContent=(viewerIdx+1)+'/'+viewerPhotos.length;
+}
+document.getElementById('imgViewer').addEventListener('touchstart',function(e){
+  if(e.touches.length===1){ this._sx=e.touches[0].clientX; }
+  else if(e.touches.length===2){
+    var dx=e.touches[0].clientX-e.touches[1].clientX, dy=e.touches[0].clientY-e.touches[1].clientY;
+    this._sd=Math.sqrt(dx*dx+dy*dy);
+  }
+});
+document.getElementById('imgViewer').addEventListener('touchend',function(e){
+  if(e.touches.length===0 && !this._sd){
+    var dx=e.changedTouches[0].clientX-this._sx;
+    if(dx<-50 && viewerIdx<viewerPhotos.length-1){viewerIdx++;showViewer(1);}
+    else if(dx>50 && viewerIdx>0){viewerIdx--;showViewer(-1);}
+  }
+  this._sd=0;
+});
+document.getElementById('imgViewer').addEventListener('touchmove',function(e){
+  if(e.touches.length===2){
+    e.preventDefault();
+    var dx=e.touches[0].clientX-e.touches[1].clientX, dy=e.touches[0].clientY-e.touches[1].clientY;
+    var d=Math.sqrt(dx*dx+dy*dy);
+    document.getElementById('viewerImg').style.transform='scale('+Math.min(4,Math.max(1,d/this._sd))+')';
+  }
+},{passive:false});
+renderRecords();
+
+// 全屏左右滑动切页
+(function(){
+  var sx=0, sy=0, horizontal=false;
+  document.addEventListener('touchstart', function(e){
+    if(e.target.closest('#imgViewer') || e.target.closest('input') || e.target.closest('textarea')) return;
+    var t=e.touches[0];
+    sx=t.clientX; sy=t.clientY; horizontal=false;
+  }, {passive:true});
+  document.addEventListener('touchmove', function(e){
+    if(e.target.closest('#imgViewer') || e.target.closest('input') || e.target.closest('textarea')) return;
+    var t=e.touches[0];
+    var dx=t.clientX-sx, dy=t.clientY-sy;
+    if(Math.abs(dx)>10 && Math.abs(dx)>Math.abs(dy)){
+      horizontal=true;
+      e.preventDefault();
+    }
+  }, {passive:false});
+  document.addEventListener('touchend', function(e){
+    if(e.target.closest('#imgViewer') || e.target.closest('input') || e.target.closest('textarea')) return;
+    var t=e.changedTouches[0];
+    var dx=t.clientX-sx, dy=t.clientY-sy;
+    if(!horizontal || Math.abs(dx)<50 || Math.abs(dy)>Math.abs(dx)*1.5) return;
+    horizontal=false;
+    var cur=location.hash||'#/';
+    if(cur==='#/gift' || cur==='#/myrecords' || cur==='#/points'){ if(dx>0) location.hash='#/me'; return; }
+    else if(cur==='#/gold') location.hash='#/';
+    else{
+      var pages=['#/','#/moments','#/me'];
+      var idx=pages.indexOf(cur);
+      if(idx<0) idx=0;
+      if(dx>0 && idx>0) location.hash=pages[idx-1];
+      else if(dx<0 && idx<pages.length-1) location.hash=pages[idx+1];
+    }
+    window._swipeDir = dx>0 ? 'left' : 'right';
+  });
+})();
+
+function route(){
+  document.getElementById('goldPage').style.display = location.hash==='#/gold' ? 'block' : 'none';
+  document.getElementById('momentsPage').style.display = location.hash==='#/moments' ? 'block' : 'none';
+  document.getElementById('mainNav').style.display = location.hash==='#/moments' ? 'none' : 'flex';
+  document.getElementById('mePage').style.display = location.hash==='#/me' ? 'block' : 'none';
+  document.getElementById('giftPage').style.display = location.hash==='#/gift' ? 'block' : 'none';
+  document.getElementById('recordsPage').style.display = location.hash==='#/myrecords' ? 'block' : 'none';
+  document.getElementById('pointsPage').style.display = location.hash==='#/points' ? 'block' : 'none';
+  if(location.hash==='#/gold' || location.hash==='#/moments' || location.hash==='#/me' || location.hash==='#/gift' || location.hash==='#/myrecords' || location.hash==='#/points') window.scrollTo(0,0);
+  // 底部导航高亮
+  var items = document.querySelectorAll('.nav-item');
+  var activeIdx = 0;
+  if(location.hash==='#/moments') activeIdx=1;
+  else if(location.hash==='#/me' || location.hash==='#/gift' || location.hash==='#/myrecords') activeIdx=2;
+  items.forEach(function(n,i){ n.classList.toggle('active', i===activeIdx); });
+  // 页面滑入动画
+  var pages=['goldPage','momentsPage','mePage','giftPage','recordsPage'];
+  pages.forEach(function(id){
+    var el=document.getElementById(id);
+    if(el && el.style.display==='block'){
+      el.style.animation = (window._swipeDir==='left'?'slideInLeft':'slideInRight')+' .18s ease';
+    }
+  });
+  document.body.style.opacity='1';
+  document.body.style.transform='none';
+  // 页面淡入
+  var activePage = document.querySelector('.page.active');
+  if(activePage){
+    activePage.style.animation='fadeIn .15s ease';
+  }
+}
+window.addEventListener('hashchange', route);
+route();
+
+// 推荐码校验
+function checkInvite(){
+  var code=document.getElementById('inviteCode').value.trim();
+  if(!code){ toast('请输入推荐码'); return; }
+  localStorage.setItem('inviteCode', code);
+  document.getElementById('inviteModal').style.display='none';
+  toast('欢迎光临福鑫寄售行');
+}
+if(localStorage.getItem('inviteCode')){
+  document.getElementById('inviteModal').style.display='none';
+}
+
+// 顶部日期
+(function(){
+  var now=new Date();
+  var weeks=['日','一','二','三','四','五','六'];
+  var md=now.getFullYear()+'年'+(now.getMonth()+1)+'月'+now.getDate()+'日 星期'+weeks[now.getDay()];
+  // 简单节假日（2026）
+  var holi={
+    '1-1':'元旦','2-17':'春节','2-18':'春节','2-19':'春节','2-20':'春节','2-21':'春节','2-22':'春节','2-23':'春节','2-24':'春节',
+    '4-4':'清明','4-5':'清明','4-6':'清明','5-1':'劳动节','5-2':'劳动节','5-3':'劳动节','5-4':'劳动节','5-5':'劳动节',
+    '6-19':'端午','6-20':'端午','6-21':'端午','9-25':'中秋','9-26':'中秋','9-27':'中秋',
+    '10-1':'国庆','10-2':'国庆','10-3':'国庆','10-4':'国庆','10-5':'国庆','10-6':'国庆','10-7':'国庆','10-8':'国庆'
+  };
+  var key=(now.getMonth()+1)+'-'+now.getDate();
+  var h=holi[key];
+  document.getElementById('headerDate').textContent = h ? md+' · 🎉'+h : md;
+})();
+// 后台礼品开关：'0' 隐藏整个礼品卡片
+// 店主日常演示数据
+const MOMENTS = [
+  { type:'buy', text:'刚收了一条男士金项链，28克，成色很新，感谢大哥信任！', imgs:['https://picsum.photos/seed/gold1/400/400','https://picsum.photos/seed/gold2/400/400'], time:'今天 14:20', likes:3 },
+  { type:'daily', text:'今天金价又涨了，手里有黄金想变现的抓紧联系，价格美丽。', imgs:['https://picsum.photos/seed/gold3/400/400'], time:'今天 10:05', likes:5 },
+  { type:'sell', text:'到店收了一台iPhone 14，电池健康89%，有喜欢的可以私信。', imgs:['https://picsum.photos/seed/phone1/400/400','https://picsum.photos/seed/phone2/400/400','https://picsum.photos/seed/phone3/400/400'], time:'昨天 16:40', likes:12 },
+  { type:'daily', text:'中秋正常营业，过节要送礼变现的随时来，梁山头六区17号。', imgs:[], time:'昨天 09:15', likes:0 }
+];
+var MOM_FILTER = 'all';
+function filterMoments(f,btn){
+  MOM_FILTER=f;
+  document.querySelectorAll('.mom-filter').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderMoments();
+}
+const TYPE_MAP = {
+  sell:  {label:'寄卖物品', color:'#ff4d2e', bg:'#fff0ed'},
+  buy:   {label:'店主处理', color:'#d4a03a', bg:'#fff8e6'},
+  daily: {label:'店主日常', color:'#2ec27e', bg:'#e8faf0'}
+};
+function renderMoments(){
+  var list = MOMENTS.filter(m => {
+    if(MOM_FILTER==='all') return true;
+    if(MOM_FILTER==='goods') return m.type==='sell' || m.type==='buy';
+    return m.type===MOM_FILTER;
+  });
+  document.getElementById('momentsList').innerHTML = list.map(m=>{
+    var origIdx = MOMENTS.indexOf(m);
+    var t = TYPE_MAP[m.type] || TYPE_MAP.daily;
+    return `
+    <div class="card">
+      <div style="display:flex;gap:10px">
+        <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#ff4d2e,#ff7a3d);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0">福</div>
+        <div style="flex:1">
+          <div style="display:flex;align-items:center;gap:8px">
+            <span style="font-weight:700;font-size:15px">福鑫寄售行</span>
+            <span style="font-size:11px;padding:2px 8px;border-radius:6px;background:${t.bg};color:${t.color};font-weight:600">${t.label}</span>
+          </div>
+          <div style="font-size:13px;color:#333;line-height:1.5;margin:6px 0">${m.text}</div>
+          ${m.imgs.length ? '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:8px 0">'+m.imgs.map((src,i)=>'<img src="'+src+'" onclick="openBigImg('+origIdx+','+i+')" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:8px;cursor:pointer">').join('')+'</div>' : ''}
+          ${(m.type==='sell'||m.type==='buy'||m.type==='daily') ? '<button onclick="contactShop('+origIdx+')" style="margin-top:8px;padding:7px 20px;background:#ff4d2e;color:#fff;border:none;border-radius:16px;font-size:12px;font-weight:600;cursor:pointer">联系店主咨询</button>' : ''}
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px">
+            <div style="font-size:12px;color:#aaa">${m.time}</div>
+            <div onclick="likeMoment(this)"><span style="cursor:pointer;font-size:16px;color:#ccc">♡</span> <span style="font-size:13px;color:#666">${m.likes||0}</span></div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+renderMoments();
+// 积分兑换礼品演示数据
+const GIFTS = [
+  { id:'LP001', name:'抽纸一提', points:100, price:'¥15', img:'https://picsum.photos/seed/gift1/300/300' },
+  { id:'LP002', name:'洗洁精一瓶', points:200, price:'¥25', img:'https://picsum.photos/seed/gift2/300/300' },
+  { id:'LP003', name:'大米5kg', points:500, price:'¥50', img:'https://picsum.photos/seed/gift3/300/300' },
+  { id:'LP004', name:'食用油5L', points:800, price:'¥80', img:'https://picsum.photos/seed/gift4/300/300' },
+  { id:'LP005', name:'洗衣液一箱', points:1200, price:'¥120', img:'https://picsum.photos/seed/gift5/300/300' },
+  { id:'LP006', name:'品牌电水壶', points:2000, price:'¥199', img:'https://picsum.photos/seed/gift6/300/300' }
+];
+function renderGifts(){
+  document.getElementById('giftList').innerHTML = GIFTS.map((g,i)=>`
+    <div class="card" style="padding:12px">
+      <img src="${g.img}" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px;margin-bottom:8px">
+      <div style="font-size:14px;font-weight:600">${g.name}</div>
+      <div style="font-size:11px;color:#aaa;margin:2px 0">编号：${g.id} · 价值 ${g.price}</div>
+      <div style="font-size:15px;color:#ff4d2e;font-weight:700;margin:6px 0">${g.points} 积分</div>
+      <button class="btn btn-primary" style="padding:10px;font-size:14px;margin:0" onclick="applyGift(${i})">兑换</button>
+    </div>`).join('');
+}
+renderGifts();
+function applyGift(i){
+  var g=GIFTS[i];
+  var p=parseInt(localStorage.getItem('myPoints')||'1280');
+  if(p<g.points){ toast('积分不足'); return; }
+  document.getElementById('giftConfirmName').textContent=g.name;
+  document.getElementById('giftConfirmPoints').textContent=g.points;
+  document.getElementById('giftConfirmPrice').textContent=g.price;
+  document.getElementById('giftConfirmImg').src=g.img;
+  document.getElementById('giftConfirmModal').style.display='flex';
+  window._applyGift=i;
+}
+// 我的页积分从localStorage读
+(function(){
+  // 设备绑定会员编号（不含数字4）
+  var mid = localStorage.getItem('memberId');
+  if(!mid){
+    var digits='012356789';
+    var num='';
+    for(var i=0;i<6;i++) num+=digits[Math.floor(Math.random()*digits.length)];
+    mid='FX'+num;
+    localStorage.setItem('memberId', mid);
+  }
+  // 旧编号含4则重新生成
+  if(/4/.test(mid) || mid.length!==8){
+    var digits2='012356789';
+    var num2='';
+    for(var j=0;j<6;j++) num2+=digits2[Math.floor(Math.random()*digits2.length)];
+    mid='FX'+num2;
+    localStorage.setItem('memberId',mid);
+  }
+  document.getElementById('memberId').textContent = mid;
+  var p=localStorage.getItem('myPoints');
+  if(p) document.getElementById('myPoints').textContent=p;
+  var s=localStorage.getItem('streakDays');
+  if(s) document.getElementById('streakDays').textContent=s;
+})();
+// 按小时档位模拟真实点赞：早高峰/午高峰/晚高峰多，平峰少
+function hourRange(h){
+  if(h>=12&&h<=13) return [60,100];    // 午高峰午休刷手机
+  if(h>=19&&h<=21) return [80,150];    // 晚高峰睡前最活跃
+  if(h>=10&&h<=11) return [10,25];     // 上午刚开门
+  if(h>=14&&h<=18) return [5,15];      // 下午平峰
+  return null;                          // 其他时间不涨
+}
+(function(){
+  var h=new Date().getHours();
+  if(h<10||h>=22) return;
+  document.querySelectorAll('#momentsList > .card').forEach(function(card){
+    var n=card.querySelector('[onclick="likeMoment(this)"]').children[1];
+    var add=0;
+    for(var k=10;k<h;k++){
+      var r=hourRange(k);
+      if(r) add+=Math.floor(r[0]+Math.random()*(r[1]-r[0]));
+    }
+    n.textContent=parseInt(n.textContent)+add;
+  });
+})();
+function confirmApplyGift(){
+  var i=window._applyGift, g=GIFTS[i];
+  giftConfirmModal.style.display='none';
+  var p=parseInt(localStorage.getItem('myPoints')||'1280')-g.points;
+  localStorage.setItem('myPoints', p);
+  if(document.getElementById('myPoints')) document.getElementById('myPoints').textContent=p;
+  addPointLog('exchange', -g.points, '兑换：'+g.name);
+  toast('兑换申请已提交，请到店领取');
+}
+// 寄卖物品
+const CONSIGN_TYPES=['数码产品','金银首饰','名表名包','古董银元','车辆估值','其他'];
+function toggleConsign(){
+  var b=document.getElementById('consignBody'), a=document.getElementById('consignArrow');
+  var open=b.style.display!=='none';
+  b.style.display=open?'none':'block';
+  a.style.transform=open?'rotate(-90deg)':'rotate(0)';
+  if(!open){ setTimeout(function(){ b.scrollIntoView({behavior:'smooth',block:'center'}); }, 100); }
+}
+function showConsignPhotos(input){
+  var prev=document.getElementById('consignPhotoPreview');
+  prev.innerHTML='';
+  window._upImgs=[];
+  var files=Array.from(input.files).slice(0,8);
+  files.forEach(function(f,i){
+    var r=new FileReader();
+    r.onload=function(e){
+      window._upImgs.push(e.target.result);
+      var img=document.createElement('img');
+      img.src=e.target.result;
+      img.style.cssText='width:70px;height:70px;object-fit:cover;border-radius:8px;cursor:pointer';
+      img.onclick=function(){ openBigImgsList(window._upImgs, window._upImgs.indexOf(e.target.result)); };
+      prev.appendChild(img);
+    };
+    r.readAsDataURL(f);
+  });
+}
+function openConsignHelp(){ document.getElementById('consignHelpModal').style.display='flex'; }
+function openConsignPicker(){
+  document.getElementById('consignOptions').innerHTML=CONSIGN_TYPES.map(t=>
+    `<button class="btn btn-ghost" style="margin:0;padding:16px;font-size:16px" onclick="pickConsign('${t}')">${t}</button>`
+  ).join('');
+  document.getElementById('consignPicker').style.display='flex';
+}
+function pickConsign(t){
+  document.getElementById('consignType').value=t;
+  var lbl=document.getElementById('consignTypeLabel');
+  lbl.textContent=t; lbl.style.color='#222';
+  document.getElementById('consignPicker').style.display='none';
+}
+function submitConsign(){
+  var t=document.getElementById('consignType').value;
+  var d=document.querySelector('#consignBody textarea').value.trim();
+  if(!t){ toast('请选择物品类型'); return; }
+  if(!d){ toast('请填写物品信息'); return; }
+  toast('正在连接店主...');
+  setTimeout(function(){ location.href='https://work.weixin.qq.com/kfid/kfc93acd0d19e1d5361?scene=寄卖'; }, 800);
+}
+function playClick(){
+  try{
+    var ctx=new (window.AudioContext||window.webkitAudioContext)();
+    var o=ctx.createOscillator(), g=ctx.createGain();
+    o.connect(g); g.connect(ctx.destination);
+    o.type='sine';
+    o.frequency.setValueAtTime(1800, ctx.currentTime);
+    g.gain.setValueAtTime(0.15, ctx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime+0.06);
+    o.start(); o.stop(ctx.currentTime+0.06);
+  }catch(e){}
+}
+document.addEventListener('click', function(e){
+  if(e.target.closest('.btn, .nav-item, .nav-center, .card-head, [onclick]')) playClick();
+});
+function playDing(){
+  try{
+    var ctx=new (window.AudioContext||window.webkitAudioContext)();
+    var o=ctx.createOscillator(), g=ctx.createGain();
+    o.connect(g); g.connect(ctx.destination);
+    o.frequency.setValueAtTime(880, ctx.currentTime);
+    o.frequency.exponentialRampToValueAtTime(1320, ctx.currentTime+0.1);
+    g.gain.setValueAtTime(0.3, ctx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime+0.25);
+    o.start(); o.stop(ctx.currentTime+0.25);
+  }catch(e){}
+}
+var _bigImgs=[], _bigIdx=0, _tx=0;
+function openBigImg(mIdx, i){
+  var m = MOMENTS[mIdx];
+  _bigImgs = m.imgs;
+  _bigIdx = i;
+  var old=document.getElementById('bigModal');
+  if(old) old.remove();
+  var modal=document.createElement('div');
+  modal.id='bigModal';
+  modal.style.cssText='position:fixed;inset:0;background:#000;z-index:9999;display:flex;align-items:center;justify-content:center;overflow:hidden';
+  modal.innerHTML='<img src="'+_bigImgs[i]+'" id="bigImgEl" style="max-width:100%;max-height:100%;object-fit:contain;transition:opacity .15s">';
+  modal.onclick=function(){this.remove()};
+  modal._scale=1;
+  modal.addEventListener('touchstart',function(e){
+    _tx=e.touches[0].clientX;
+    modal._ty=e.touches[0].clientY;
+    modal._swiped=false;
+    if(e.touches.length===2){
+      var dx=e.touches[0].clientX-e.touches[1].clientX, dy=e.touches[0].clientY-e.touches[1].clientY;
+      modal._sd=Math.sqrt(dx*dx+dy*dy);
+    }
+  },{passive:true});
+  modal.addEventListener('touchmove',function(e){
+    if(e.touches.length===2 && modal._sd){
+      e.preventDefault();
+      var dx=e.touches[0].clientX-e.touches[1].clientX, dy=e.touches[0].clientY-e.touches[1].clientY;
+      var d=Math.sqrt(dx*dx+dy*dy);
+      modal._scale=modal._scale*d/modal._sd;
+      modal._scale=Math.max(1,Math.min(3,modal._scale));
+      modal._sd=d;
+      document.getElementById('bigImgEl').style.transform='scale('+modal._scale+')';
+      return;
+    }
+    if(modal._swiped) return;
+    var dx=e.touches[0].clientX-_tx;
+    var dy=e.touches[0].clientY-modal._ty;
+    if(Math.abs(dx)>10 && Math.abs(dx)>Math.abs(dy) && modal._scale<=1){
+      document.getElementById('bigImgEl').style.transform='translateX('+dx*0.15+'px)';
+    }
+  },{passive:false});
+  modal.addEventListener('touchend',function(e){
+    if(modal._sd){ modal._sd=0; return; }
+    var dx=e.changedTouches[0].clientX-_tx;
+    var dy=e.changedTouches[0].clientY-modal._ty;
+    document.getElementById('bigImgEl').style.transform='scale('+modal._scale+')';
+    if(modal._scale>1) return;
+    if(Math.abs(dx)>40 && Math.abs(dx)>Math.abs(dy)){
+      modal._swiped=true;
+      if(dx<0 && _bigIdx<_bigImgs.length-1){
+        _bigIdx++;
+        var el=document.getElementById('bigImgEl');
+        el.style.opacity='0';
+        setTimeout(function(){el.src=_bigImgs[_bigIdx];el.style.opacity='1'},150);
+      } else if(dx>0 && _bigIdx>0){
+        _bigIdx--;
+        var el2=document.getElementById('bigImgEl');
+        el2.style.opacity='0';
+        setTimeout(function(){el2.src=_bigImgs[_bigIdx];el2.style.opacity='1'},150);
+      }
+    }
+  });
+  modal.addEventListener('touchmove',function(e){e.stopPropagation()},{passive:true});
+  document.body.appendChild(modal);
+}
+function contactShop(idx){
+  var m = MOMENTS[idx];
+  var d = new Date();
+  var code = String(d.getFullYear()).slice(2)+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0')+'-'+String(d.getHours()).padStart(2,'0')+String(d.getMinutes()).padStart(2,'0');
+  var url = 'https://work.weixin.qq.com/kfid/kfc93acd0d19e1d5361?scene='+encodeURIComponent('咨询物品'+code);
+  window.open(url,'_blank');
+}
+function likeMoment(el){
+  var h=el.children[0], n=el.children[1];
+  if(h.dataset.on){ h.dataset.on=''; h.textContent='♡'; h.style.color='#ccc'; n.textContent=parseInt(n.textContent)-1; return; }
+  h.dataset.on='1'; h.textContent='♥'; h.style.color='#ff4d2e'; n.textContent=parseInt(n.textContent)+1;
+  // 点赞一条+2积分
+  var points=parseInt(localStorage.getItem('myPoints')||'1280')+2;
+  localStorage.setItem('myPoints', points);
+  if(document.getElementById('myPoints')) document.getElementById('myPoints').textContent=points;
+  addPointLog('like', 2, '点赞打卡');
+  // 每条内容每天只算一次打卡（连续天数）
+  var today=new Date().toDateString();
+  var key='checkins_'+today;
+  var doneIds=JSON.parse(localStorage.getItem(key)||'[]');
+  var card=el.closest('.card');
+  var allCards=document.querySelectorAll('#momentsList > .card');
+  var id=Array.prototype.indexOf.call(allCards, card);
+  if(doneIds.indexOf(id)===-1){
+    doneIds.push(id);
+    localStorage.setItem(key, JSON.stringify(doneIds));
+    // 积分规则：前3天每天+5，连续满3天后第4天起每天+10，断签重新从5开始
+    var yesterday=new Date(Date.now()-86400000).toDateString();
+    var lastDate=localStorage.getItem('lastCheckinDate');
+    var streak=parseInt(localStorage.getItem('streakDays')||'1');
+    if(lastDate===yesterday){ streak+=1; } else { streak=1; }
+    // 每天额外打卡积分：基础+5，连续第4天起额外再+5（共+10）
+    var bonus = streak>=4 ? 10 : 5;
+    var p2 = parseInt(localStorage.getItem('myPoints')||'1280')+bonus;
+    localStorage.setItem('myPoints', p2);
+    if(document.getElementById('myPoints')) document.getElementById('myPoints').textContent=p2;
+    addPointLog('checkin', bonus, '每日打卡（连续'+streak+'天）');
+    // 连续7天奖励100积分
+    if(streak===7){
+      var p7=parseInt(localStorage.getItem('myPoints')||'1280')+100;
+      localStorage.setItem('myPoints', p7);
+      if(document.getElementById('myPoints')) document.getElementById('myPoints').textContent=p7;
+      addPointLog('bonus', 100, '连续打卡7天奖励');
+      toast('🎉 连续打卡7天，奖励100积分！');
+    }
+    // 连续30天奖励1000积分
+    if(streak===30){
+      var p3=parseInt(localStorage.getItem('myPoints')||'1280')+1000;
+      localStorage.setItem('myPoints', p3);
+      if(document.getElementById('myPoints')) document.getElementById('myPoints').textContent=p3;
+      addPointLog('bonus', 1000, '连续打卡30天奖励');
+      toast('🎉 连续打卡30天，奖励1000积分！');
+    }
+    localStorage.setItem('lastCheckinDate', today);
+    localStorage.setItem('streakDays', streak);
+    document.getElementById('totalCheckins').textContent=parseInt(document.getElementById('totalCheckins').textContent)+1;
+    document.getElementById('streakDays').textContent=streak;
+  }
+  playDing();
+  // 在爱心旁弹小气泡
+  var tip=document.createElement('span');
+  tip.textContent='打卡成功';
+  tip.style.cssText='position:absolute;background:linear-gradient(135deg,#ff4d2e,#ff7a3d);color:#fff;font-size:12px;padding:4px 10px;border-radius:12px;white-space:nowrap;right:30px;top:-8px;box-shadow:0 4px 12px rgba(255,77,46,.4);animation:floatUp .8s ease forwards;pointer-events:none';
+  el.style.position='relative';
+  el.appendChild(tip);
+  setTimeout(function(){ tip.remove(); }, 800);
+}
+// 每30秒按当前小时档位分摊增量
+(function(){
+  setInterval(function(){
+    var r=hourRange(new Date().getHours());
+    if(!r) return;
+    var per30s=(r[0]+Math.random()*(r[1]-r[0]))/120;
+    document.querySelectorAll('#momentsList > .card').forEach(function(card){
+      var likeDiv=card.querySelector('[onclick="likeMoment(this)"]');
+      if(!likeDiv) return;
+      var n=likeDiv.children[1];
+      n.textContent=parseInt(n.textContent)+Math.floor(per30s+Math.random()*0.5);
+    });
+  }, 30000);
+})();
+// 公告
+var savedNotice = localStorage.getItem('homeNotice');
+var noticeContent = savedNotice !== null ? savedNotice : '国庆期间正常营业，黄金高价回收，免费估价，到店领好礼';
+if(savedNotice === ''){
+  document.getElementById('noticeText').closest('.card').style.display = 'none';
+} else {
+  document.getElementById('noticeText').textContent = noticeContent;
+  document.getElementById('noticeFull').textContent = noticeContent;
+}
+
 // 主动移除平台注入的右下角水印/角标（CSS 藏不住时兜底）
-function stripWatermark(){
-  document.querySelectorAll('.watermark-root,[class*="watermark"],[class*="brand-badge"],[class*="miaoda-badge"]').forEach(function(el){
+function stripWatermark(){  document.querySelectorAll('.watermark-root,[class*="watermark"],[class*="brand-badge"],[class*="miaoda-badge"]').forEach(function(el){
     el.remove();
   });
   // 兜底：遍历所有 fixed 定位的小元素，含"豆包"文字且尺寸像胶囊的直接删

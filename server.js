@@ -1,6 +1,8 @@
 import express from 'express';
+import multer from 'multer';
 import Database from 'better-sqlite3';
 import path from 'path';
+import fs from 'fs';
 import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -10,6 +12,15 @@ const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'fuxin2026';
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
+
+// 图片上传目录
+const UPLOAD_DIR = path.join(__dirname, 'public', 'uploads');
+fs.mkdirSync(UPLOAD_DIR, { recursive: true });
+const storage = multer.diskStorage({
+  destination: UPLOAD_DIR,
+  filename: (req, file, cb) => cb(null, Date.now() + '-' + Math.round(Math.random()*1e4) + path.extname(file.originalname))
+});
+const upload = multer({ storage, limits: { fileSize: 10*1024*1024 } });
 
 // ===== 数据库 =====
 const db = new Database(path.join(__dirname, 'data.db'));
@@ -29,11 +40,28 @@ CREATE TABLE IF NOT EXISTS estimates (
   goods_type TEXT,
   description TEXT,
   phone TEXT,
+  call_ok TEXT,
+  wechat_ok TEXT,
+  photos TEXT,
   status TEXT DEFAULT 'pending',
   remark TEXT,
   created_at TEXT DEFAULT (datetime('now','localtime'))
 );
 `);
+try { db.exec(`ALTER TABLE estimates ADD COLUMN call_ok TEXT`); } catch(e){}
+try { db.exec(`ALTER TABLE estimates ADD COLUMN wechat_ok TEXT`); } catch(e){}
+try { db.exec(`ALTER TABLE estimates ADD COLUMN photos TEXT`); } catch(e){}
+
+// 站点配置表
+db.exec(`CREATE TABLE IF NOT EXISTS settings (key TEXT PRIMARY KEY, value TEXT)`);
+
+// ===== 公开API：读站点配置 =====
+app.get('/api/settings', (req, res) => {
+  const rows = db.prepare(`SELECT key, value FROM settings`).all();
+  const out = {};
+  rows.forEach(r => out[r.key] = r.value);
+  res.json(out);
+});
 
 // ===== 公开API：礼品申领 =====
 app.post('/api/gift', (req, res) => {
@@ -56,11 +84,12 @@ app.post('/api/gift', (req, res) => {
 });
 
 // ===== 公开API：估价提交 =====
-app.post('/api/estimate', (req, res) => {
-  const { goodsType, description, phone } = req.body;
+app.post('/api/estimate', upload.array('photos', 8), (req, res) => {
+  const { goodsType, description, phone, callOk, wechatOk } = req.body;
   if (!phone) return res.json({ ok: false, msg: '请留手机号' });
-  db.prepare(`INSERT INTO estimates (goods_type,description,phone) VALUES (?,?,?)`)
-    .run(goodsType || '', description || '', phone);
+  const photos = (req.files||[]).map(f=>f.filename).join(',');
+  db.prepare(`INSERT INTO estimates (goods_type,description,phone,call_ok,wechat_ok,photos) VALUES (?,?,?,?,?,?)`)
+    .run(goodsType || '', description || '', phone, callOk || '', wechatOk || '', photos);
   res.json({ ok: true });
 });
 
@@ -124,6 +153,13 @@ app.get('/api/admin/estimates', (req, res) => {
 
 app.post('/api/admin/estimates/:id/status', (req, res) => {
   db.prepare(`UPDATE estimates SET status=? WHERE id=?`).run(req.body.status, req.params.id);
+  res.json({ ok: true });
+});
+
+// 保存站点配置（公告、礼品开关等）
+app.post('/api/admin/settings', (req, res) => {
+  const upsert = db.prepare(`INSERT INTO settings (key, value) VALUES (?, ?) ON CONFLICT(key) DO UPDATE SET value=excluded.value`);
+  Object.entries(req.body || {}).forEach(([k, v]) => upsert.run(k, String(v ?? '')));
   res.json({ ok: true });
 });
 
